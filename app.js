@@ -74,7 +74,7 @@ const modeHints = {
 
 const exampleRequests = {
   proposal: "",
-  wireframe: "添付資料をもとにWebサイトのワイヤーフレームを作るプロンプトを作って",
+  wireframe: "",
   policy: "自社の新しい社内制度を整理するためのプロンプトを作って",
   "ui-review": "",
   "design-direction": "ブランドに合うデザイン指示書を作るためのプロンプトを作って",
@@ -379,7 +379,7 @@ const detailInstructions = {
 
 const defaults = {
   mode: "proposal",
-  request: "webサイトの企画提案書の構成を作るためのプロンプトを作って",
+  request: "",
   background: "",
   audience: "クライアントに提案する人",
   outputType: "outline",
