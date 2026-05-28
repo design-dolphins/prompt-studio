@@ -603,13 +603,15 @@ function buildPrompt(state) {
     "# 【目的（Goal）】",
     bulletList(config.goals),
     "",
-    "# 【ユーザーの依頼内容】",
+    "# 【依頼内容】",
     request,
     "",
-    "# 【背景（Background）】",
-    state.background || "特に指定がない場合は、一般的なビジネス用途として自然に補ってください。",
-    line("想定する読み手", state.audience),
-    "",
+    ...(state.background || state.audience ? [
+      "# 【背景（Background）】",
+      state.background || "",
+      state.audience ? `- 想定する読み手：${state.audience}` : "",
+      "",
+    ] : []),
     "# 【制約条件（Constraints）】",
     bulletList(config.constraints),
     line("文章のトーン", tone),
@@ -620,7 +622,6 @@ function buildPrompt(state) {
     "- 曖昧な表現を減らし、誰が読んでも同じ意味に受け取れるようにしてください。",
     "- 見出し、箇条書き、表などを使い、読みやすく整理してください。",
     "",
-    "# 【入力素材（Materials）】",
     (() => {
       if (state.mode === "wireframe") {
         const pageTypeLabels = {
@@ -652,9 +653,9 @@ function buildPrompt(state) {
         if (state.request) {
           lines.push("", "【背景・その他】", state.request);
         }
-        return lines.join("\n");
+        return ["# 【入力素材（Materials）】", lines.join("\n")].join("\n");
       }
-      return state.materials ? state.materials : `参考にできる素材があれば貼ってください（例: ${bulletList(config.materials).replace(/^- /gm, "").split("\n").join("、")}など）。`;
+      return state.materials ? ["# 【入力素材（Materials）】", state.materials].join("\n") : null;
     })(),
     "",
     "# 【出力形式（Output Format）】",
