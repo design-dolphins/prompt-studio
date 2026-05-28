@@ -875,7 +875,8 @@ form.addEventListener("change", updatePrompt);
 fields.mode.addEventListener("change", () => {
   const examples = Object.values(exampleRequests);
   if (!fields.request.value.trim() || examples.includes(fields.request.value.trim())) {
-    fields.request.value = exampleRequests[fields.mode.value] || exampleRequests.custom;
+    const nextExample = exampleRequests[fields.mode.value];
+    fields.request.value = nextExample !== undefined ? nextExample : exampleRequests.custom;
   }
   if (fields.mode.value === "wireframe" && fields.outputType.value !== "image") {
     fields.outputType.value = "html";
