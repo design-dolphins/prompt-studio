@@ -28,6 +28,15 @@ const fields = {
   wfPagePurpose: document.querySelector("#wfPagePurpose"),
   wfSections: document.querySelector("#wfSections"),
   wfNotes: document.querySelector("#wfNotes"),
+  propIndustry: document.querySelector("#propIndustry"),
+  propIssue: document.querySelector("#propIssue"),
+  propGoal: document.querySelector("#propGoal"),
+  propTarget: document.querySelector("#propTarget"),
+  propSolution: document.querySelector("#propSolution"),
+  propDiff: document.querySelector("#propDiff"),
+  propKpi: document.querySelector("#propKpi"),
+  propSchedule: document.querySelector("#propSchedule"),
+  propTeam: document.querySelector("#propTeam"),
 };
 
 const modeLabels = {
@@ -378,6 +387,67 @@ const defaults = {
   includeSummary: true,
 };
 
+function buildProposalPrompt(state) {
+  const fill = (val, fallback) => (val || "").trim() || fallback;
+  const opt = (label, val) => (val || "").trim() ? `■ ${label}：${val.trim()}` : null;
+
+  const inputLines = [
+    opt("クライアント業種", state.propIndustry),
+    opt("現状課題", state.propIssue),
+    opt("Webサイトの目的", state.propGoal),
+    opt("ターゲット", state.propTarget),
+    opt("提案する施策", state.propSolution),
+    opt("競合との差別化ポイント", state.propDiff),
+    opt("想定KPI", state.propKpi),
+    opt("制作スケジュール", state.propSchedule),
+    opt("制作体制", state.propTeam),
+  ].filter(Boolean);
+
+  const inputSection = inputLines.length > 0
+    ? inputLines.join("\n")
+    : "情報の入力がありません。一般的なWeb制作案件として合理的に補完し、補完した内容は「仮定」と明記してください。";
+
+  return [
+    "あなたは「企画書・提案書構成クリエイターAI」です。",
+    "以下の情報をもとに、クライアント向けのWebサイト企画提案書の構成案を作成してください。",
+    "",
+    "# 【目的】",
+    "- クライアントに「この企画なら成果が出そう」と感じてもらう",
+    "- 課題整理から解決策までをストーリーで伝える",
+    "- スライド化しやすい構成を作る",
+    "- UI/サイト構成に転用しやすい情報を整理する",
+    "",
+    "# 【前提条件】",
+    "不足情報は一般的なWeb制作案件として合理的に補完してください。補完した内容は「仮定」とわかるように記載してください。",
+    "",
+    "# 【必須条件】",
+    "「問題 → 解決 → 実行 → 成果」の流れを必ず守ってください。",
+    "- 1スライド = 1メッセージ",
+    "- 専門用語を使いすぎない",
+    "- 読み手メリットを明確に書く",
+    "- 実現可能性の低い施策は除外",
+    "- UI化できる要素を抽出",
+    "- 各セクションは5行程度で簡潔に整理",
+    "- スライドタイトルだけで意図が伝わるようにする",
+    "",
+    "# 【入力情報】",
+    inputSection,
+    "",
+    "# 【出力形式】",
+    "最初に「目的・背景・求められるアウトプット・守る条件」を短く整理してから、以下の構成で出力してください。",
+    "",
+    "1. 提案書要約（Executive Summary）",
+    "2. As-Is（現状課題）整理",
+    "3. To-Be（目指す姿）整理",
+    "4. ソリューション全体像",
+    "5. スライド構成案（10〜20枚）| No | スライドタイトル | 伝えるメッセージ | 主な内容 |",
+    "6. UIモック化用の抽出情報（Hero / Feature / Flow / CTA）",
+    "7. 追加で検討すべき論点",
+    "",
+    "以上の内容を確認しました。それでは今すぐ作業を開始してください。途中で質問はせず、今ある情報から最善の形で完成させてください。",
+  ].join("\n");
+}
+
 function buildIllustPrompt(state) {
   const theme = state.request || 'テーマを入力してください';
 
@@ -469,11 +539,14 @@ function updateWfSectionsPlaceholder(pageType) {
 function updateIllustVisibility(mode) {
   const isIllust = mode === "illust";
   const isWireframe = mode === "wireframe";
+  const isProposal = mode === "proposal";
+  const hideStandard = isIllust || isWireframe || isProposal;
+  document.querySelector("#fieldset-proposal").style.display = isProposal ? "" : "none";
   document.querySelector("#fieldset-wireframe").style.display = isWireframe ? "" : "none";
   document.querySelector("#fieldset-illust").style.display = isIllust ? "" : "none";
-  document.querySelector("#fieldset-extras").style.display = (isIllust || isWireframe) ? "none" : "";
-  document.querySelector("#optionsFieldset").style.display = (isIllust || isWireframe) ? "none" : "";
-  document.querySelector("#fieldset-finish").style.display = (isIllust || isWireframe) ? "none" : "";
+  document.querySelector("#fieldset-extras").style.display = hideStandard ? "none" : "";
+  document.querySelector("#optionsFieldset").style.display = hideStandard ? "none" : "";
+  document.querySelector("#fieldset-finish").style.display = hideStandard ? "none" : "";
   const requestLabel = document.querySelector("#requestLabel");
   const requestTextarea = document.querySelector("#request");
   if (isIllust) {
@@ -482,12 +555,12 @@ function updateIllustVisibility(mode) {
   } else if (isWireframe) {
     requestLabel.firstChild.textContent = "作成の背景・ひとこと（任意）";
     requestTextarea.placeholder = "例：初回クライアント提案用。シンプルに見せたい。";
+  } else if (isProposal) {
+    requestLabel.firstChild.textContent = "補足・その他（任意）";
+    requestTextarea.placeholder = "例：競合他社より提案資料が弱い、スライド20枚以内で作りたい";
   } else {
     requestLabel.firstChild.textContent = "ラフな相談内容";
     requestTextarea.placeholder = "例: webサイトの企画提案書の構成を作るためのプロンプトがほしい";
-  }
-  if (isWireframe) {
-    // セクション例の初期化はモード切替時のみ（updateWfSectionsPlaceholder経由）
   }
 }
 
@@ -565,6 +638,7 @@ function numberedList(items) {
 
 function buildPrompt(state) {
   if (state.mode === "illust") return buildIllustPrompt(state);
+  if (state.mode === "proposal") return buildProposalPrompt(state);
 
   const mode = modeLabels[state.mode];
   const role = roleMap[state.mode];
