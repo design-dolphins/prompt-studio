@@ -8,17 +8,17 @@
 
       .cls-1, .cls-2 {
         fill: none;
-        stroke: #fff;
+        stroke: #1a1a1a;
         stroke-linecap: round;
         stroke-width: 1.7px;
       }
 
-      .cls-2 {
-        stroke-linejoin: round;
+      .cls-3 {
+        fill: #fff;
       }
 
-      .cls-3 {
-        fill: #282828;
+      .cls-2 {
+        stroke-linejoin: round;
       }
     </style>
   </defs>
