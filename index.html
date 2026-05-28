@@ -44,11 +44,6 @@
                 </select>
                 <small class="field-hint" id="modeHint"></small>
               </label>
-
-              <label id="requestLabel">
-                ラフな相談内容
-                <textarea id="request" name="request" rows="4" placeholder="例: webサイトの企画提案書の構成を作るためのプロンプトがほしい"></textarea>
-              </label>
             </fieldset>
 
             <fieldset id="fieldset-uireview" style="display:none">
@@ -229,6 +224,13 @@
                   <option value="bust">バストアップ</option>
                   <option value="face">フェイスアップ</option>
                 </select>
+              </label>
+            </fieldset>
+
+            <fieldset id="fieldset-request">
+              <legend id="requestLegend">依頼内容</legend>
+              <label id="requestLabel">
+                <textarea id="request" name="request" rows="4" placeholder=""></textarea>
               </label>
             </fieldset>
 

@@ -75,14 +75,14 @@ const modeHints = {
 const exampleRequests = {
   proposal: "",
   wireframe: "",
-  policy: "自社の新しい社内制度を整理するためのプロンプトを作って",
+  policy: "育児休暇制度の改定内容を整理して社員向けに共有したい",
   "ui-review": "",
-  "design-direction": "ブランドに合うデザイン指示書を作るためのプロンプトを作って",
-  email: "クライアントに送る依頼メールを作るためのプロンプトを作って",
-  minutes: "議事録をクライアント向けに読みやすく整えるプロンプトを作って",
-  brainstorm: "新しいブランド施策のアイデアを出してもらうプロンプトを作って",
-  research: "競合サービスを比較分析してもらうプロンプトを作って",
-  custom: "やりたいことに合わせて、使いやすいプロンプトを作って",
+  "design-direction": "コーポレートサイトリニューアルのデザイン方針をまとめたい",
+  email: "納期延期をクライアントに丁重にお願いするメールを書きたい",
+  minutes: "プロジェクトキックオフ会議の議事録を整理したい",
+  brainstorm: "新サービスのネーミングアイデアを出したい",
+  research: "国内の競合3社のサービス内容を比較したい",
+  custom: "",
   illust: "東京の下町",
 };
 
@@ -590,23 +590,23 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-extras").style.display = hideStandard ? "none" : "";
   document.querySelector("#optionsFieldset").style.display = hideStandard ? "none" : "";
   document.querySelector("#fieldset-finish").style.display = hideStandard ? "none" : "";
-  const requestLabel = document.querySelector("#requestLabel");
+  const requestLegend = document.querySelector("#requestLegend");
   const requestTextarea = document.querySelector("#request");
   if (isIllust) {
-    requestLabel.firstChild.textContent = "テーマ";
+    requestLegend.textContent = "テーマ";
     requestTextarea.placeholder = "例：東京の下町、コーヒー文化、アウトドアライフ";
   } else if (isWireframe) {
-    requestLabel.firstChild.textContent = "作成の背景・ひとこと（任意）";
+    requestLegend.textContent = "作成の背景・ひとこと（任意）";
     requestTextarea.placeholder = "例：初回クライアント提案用。シンプルに見せたい。";
   } else if (isProposal) {
-    requestLabel.firstChild.textContent = "補足・その他（任意）";
+    requestLegend.textContent = "補足・その他（任意）";
     requestTextarea.placeholder = "例：競合他社より提案資料が弱い、スライド20枚以内で作りたい";
   } else if (isUiReview) {
-    requestLabel.firstChild.textContent = "補足・その他（任意）";
+    requestLegend.textContent = "補足・その他（任意）";
     requestTextarea.placeholder = "例：スマホ表示で見てほしい、競合と比べて弱い部分を知りたい";
   } else {
-    requestLabel.firstChild.textContent = "ラフな相談内容";
-    requestTextarea.placeholder = "例: webサイトの企画提案書の構成を作るためのプロンプトがほしい";
+    requestLegend.textContent = "依頼内容";
+    requestTextarea.placeholder = "ここに相談内容・タスクの詳細を入力してください";
   }
 }
 
