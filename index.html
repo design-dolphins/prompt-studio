@@ -51,6 +51,41 @@
               </label>
             </fieldset>
 
+            <fieldset id="fieldset-uireview" style="display:none">
+              <legend>UI/UXレビュー設定</legend>
+
+              <label>
+                レビュー観点
+                <select id="uiPerspective" name="uiPerspective">
+                  <option value="overall">UI/UX総合</option>
+                  <option value="cv">コンバージョン改善</option>
+                  <option value="usability">ユーザビリティ</option>
+                  <option value="design">デザイン品質</option>
+                  <option value="accessibility">アクセシビリティ</option>
+                </select>
+              </label>
+
+              <label>
+                ページの種類
+                <input id="uiPageType" name="uiPageType" type="text" placeholder="例：LP、トップページ、フォームページ、採用ページ" />
+              </label>
+
+              <label>
+                ターゲットユーザー
+                <input id="uiTarget" name="uiTarget" type="text" placeholder="例：30代女性、BtoB企業の担当者、初めて訪れる人" />
+              </label>
+
+              <label>
+                改善したいこと（任意）
+                <textarea id="uiGoal" name="uiGoal" rows="2" placeholder="例：CVRを上げたい、離脱率を下げたい、信頼感を出したい"></textarea>
+              </label>
+
+              <label>
+                補足（任意）
+                <textarea id="uiNotes" name="uiNotes" rows="2" placeholder="例：スマホ表示で見てほしい、競合と比べて弱い部分を知りたい"></textarea>
+              </label>
+            </fieldset>
+
             <fieldset id="fieldset-proposal" style="display:none">
               <legend>企画書・提案書設定</legend>
 

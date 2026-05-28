@@ -37,6 +37,11 @@ const fields = {
   propKpi: document.querySelector("#propKpi"),
   propSchedule: document.querySelector("#propSchedule"),
   propTeam: document.querySelector("#propTeam"),
+  uiPerspective: document.querySelector("#uiPerspective"),
+  uiPageType: document.querySelector("#uiPageType"),
+  uiTarget: document.querySelector("#uiTarget"),
+  uiGoal: document.querySelector("#uiGoal"),
+  uiNotes: document.querySelector("#uiNotes"),
 };
 
 const modeLabels = {
@@ -387,6 +392,42 @@ const defaults = {
   includeSummary: true,
 };
 
+function buildUiReviewPrompt(state) {
+  const perspectiveLabels = {
+    overall: "UI/UX総合",
+    cv: "コンバージョン改善",
+    usability: "ユーザビリティ",
+    design: "デザイン品質",
+    accessibility: "アクセシビリティ",
+  };
+  const perspective = perspectiveLabels[state.uiPerspective] || "UI/UX総合";
+
+  const lines = [
+    "添付のスクリーンショットを分析してください。",
+    "",
+    `# レビュー観点：${perspective}`,
+  ];
+  if (state.uiPageType) lines.push(`# ページの種類：${state.uiPageType}`);
+  if (state.uiTarget) lines.push(`# ターゲットユーザー：${state.uiTarget}`);
+  if ((state.uiGoal || "").trim()) lines.push(`# 改善したいこと：${state.uiGoal.trim()}`);
+  if ((state.uiNotes || "").trim()) lines.push(`# 補足：${state.uiNotes.trim()}`);
+  if ((state.request || "").trim()) lines.push(`# その他：${state.request.trim()}`);
+
+  lines.push(
+    "",
+    "# 出力形式",
+    "以下の構成でレビューしてください。",
+    "1. 総評（3行程度）",
+    "2. 良い点（箇条書き）",
+    "3. 改善点（優先度高→低の順。各項目に「問題 / 理由 / 改善案」を含める）",
+    "4. すぐ直せる改善アクション TOP3",
+    "",
+    "以上の内容を確認しました。それでは今すぐレビューを開始してください。"
+  );
+
+  return lines.join("\n");
+}
+
 function buildProposalPrompt(state) {
   const fill = (val, fallback) => (val || "").trim() || fallback;
   const opt = (label, val) => (val || "").trim() ? `■ ${label}：${val.trim()}` : null;
@@ -540,7 +581,9 @@ function updateIllustVisibility(mode) {
   const isIllust = mode === "illust";
   const isWireframe = mode === "wireframe";
   const isProposal = mode === "proposal";
-  const hideStandard = isIllust || isWireframe || isProposal;
+  const isUiReview = mode === "ui-review";
+  const hideStandard = isIllust || isWireframe || isProposal || isUiReview;
+  document.querySelector("#fieldset-uireview").style.display = isUiReview ? "" : "none";
   document.querySelector("#fieldset-proposal").style.display = isProposal ? "" : "none";
   document.querySelector("#fieldset-wireframe").style.display = isWireframe ? "" : "none";
   document.querySelector("#fieldset-illust").style.display = isIllust ? "" : "none";
@@ -558,6 +601,9 @@ function updateIllustVisibility(mode) {
   } else if (isProposal) {
     requestLabel.firstChild.textContent = "補足・その他（任意）";
     requestTextarea.placeholder = "例：競合他社より提案資料が弱い、スライド20枚以内で作りたい";
+  } else if (isUiReview) {
+    requestLabel.firstChild.textContent = "補足・その他（任意）";
+    requestTextarea.placeholder = "例：スマホ表示で見てほしい、競合と比べて弱い部分を知りたい";
   } else {
     requestLabel.firstChild.textContent = "ラフな相談内容";
     requestTextarea.placeholder = "例: webサイトの企画提案書の構成を作るためのプロンプトがほしい";
@@ -639,6 +685,7 @@ function numberedList(items) {
 function buildPrompt(state) {
   if (state.mode === "illust") return buildIllustPrompt(state);
   if (state.mode === "proposal") return buildProposalPrompt(state);
+  if (state.mode === "ui-review") return buildUiReviewPrompt(state);
 
   const mode = modeLabels[state.mode];
   const role = roleMap[state.mode];
