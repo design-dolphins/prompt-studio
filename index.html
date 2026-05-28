@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Prompt Maker</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="workspace" aria-label="プロンプトメーカー">
+        <header class="topbar">
+          <div>
+            <p class="eyebrow">Prompt Maker</p>
+            <h1>やりたいことを選んで、コピペ用プロンプトを作る</h1>
+            <p class="lead-text">作りたいものを選んで、ラフな相談を書くだけ。右側に別チャットへ貼れるプロンプトができます。</p>
+          </div>
+          <div class="topbar-actions">
+            <button class="icon-button" id="resetBtn" type="button" aria-label="初期化" title="初期化">↺</button>
+            <button class="primary-button" id="copyBtn" type="button">コピー</button>
+          </div>
+        </header>
+
+        <div class="layout-grid">
+          <form class="control-panel" id="promptForm">
+            <fieldset>
+              <legend>まず選ぶ</legend>
+
+              <label>
+                作りたいもの
+                <select id="mode" name="mode">
+                  <option value="proposal">企画書・提案書</option>
+                  <option value="html">Webサイト・HTMLモック</option>
+                  <option value="wireframe">ワイヤーフレーム</option>
+                  <option value="policy">社内制度・ルール整理</option>
+                  <option value="ui-review">UI/UXレビュー</option>
+                  <option value="design-direction">デザイン指示書</option>
+                  <option value="email">メール・依頼文</option>
+                  <option value="minutes">議事録・要約リライト</option>
+                  <option value="brainstorm">アイデア出し</option>
+                  <option value="research">リサーチ・競合分析</option>
+                  <option value="illust">イラスト生成</option>
+                  <option value="custom">自由に作る</option>
+                </select>
+                <small class="field-hint" id="modeHint"></small>
+              </label>
+
+              <label id="requestLabel">
+                ラフな相談内容
+                <textarea id="request" name="request" rows="4" placeholder="例: webサイトの企画提案書の構成を作るためのプロンプトがほしい"></textarea>
+              </label>
+            </fieldset>
+
+            <fieldset id="fieldset-wireframe" style="display:none">
+              <legend>ワイヤーフレーム設定</legend>
+
+              <label>
+                ページの種類
+                <select id="wfPageType" name="wfPageType">
+                  <option value="all">全ページ</option>
+                  <option value="top">トップページ</option>
+                  <option value="sub">下層ページ</option>
+                  <option value="lp">LP（ランディングページ）</option>
+                  <option value="any">おまかせ（AIに構成から提案してもらう）</option>
+                </select>
+              </label>
+
+              <label>
+                会社名
+                <input id="wfCompany" name="wfCompany" type="text" placeholder="例：株式会社〇〇" />
+              </label>
+
+              <label>
+                業種
+                <input id="wfIndustry" name="wfIndustry" type="text" placeholder="例：清掃サービス、IT支援、不動産" />
+              </label>
+
+              <label>
+                ページ名
+                <input id="wfPageName" name="wfPageName" type="text" placeholder="例：採用トップ、サービス紹介ページ" />
+              </label>
+
+              <label>
+                目的
+                <input id="wfPagePurpose" name="wfPagePurpose" type="text" placeholder="例：新規法人顧客への問い合わせ獲得" />
+              </label>
+
+              <label>
+                セクション構成（任意）
+                <textarea id="wfSections" name="wfSections" rows="7"></textarea>
+                <small class="field-hint">空欄にするとAIが提案します。</small>
+              </label>
+
+              <label>
+                補足（任意）
+                <textarea id="wfNotes" name="wfNotes" rows="2" placeholder="例：電話番号、CTAコピー、強調したいポイントなど"></textarea>
+              </label>
+            </fieldset>
+
+            <fieldset id="fieldset-illust" style="display:none">
+              <legend>イラスト設定</legend>
+
+              <label>
+                カラー数
+                <select id="illustColors" name="illustColors">
+                  <option value="3">3色</option>
+                  <option value="2">2色</option>
+                  <option value="4">4色</option>
+                  <option value="mono">モノクロ（白黒）</option>
+                </select>
+              </label>
+
+              <label>
+                背景
+                <select id="illustBg" name="illustBg">
+                  <option value="solid">あり（テーマカラー）</option>
+                  <option value="white">あり（白）</option>
+                  <option value="transparent">なし（透明）</option>
+                </select>
+              </label>
+
+              <label>
+                人物
+                <select id="illustFigure" name="illustFigure">
+                  <option value="include">含む</option>
+                  <option value="main">人物メイン</option>
+                  <option value="none">なし</option>
+                </select>
+              </label>
+
+              <label id="figureCountRow">
+                人物の数
+                <select id="illustFigureCount" name="illustFigureCount">
+                  <option value="1">1人</option>
+                  <option value="2-3">2〜3人</option>
+                  <option value="4-6">4〜6人</option>
+                  <option value="many">大勢（7人以上）</option>
+                </select>
+              </label>
+
+              <label id="framingRow">
+                フレーミング
+                <select id="illustFraming" name="illustFraming">
+                  <option value="full">全身</option>
+                  <option value="bust">バストアップ</option>
+                  <option value="face">フェイスアップ</option>
+                </select>
+              </label>
+            </fieldset>
+
+            <fieldset id="fieldset-extras">
+              <legend>必要なら足す</legend>
+
+              <label>
+                背景・状況
+                <textarea id="background" name="background" rows="3" placeholder="例: 新規サービスの提案。クライアントに初回提案する"></textarea>
+              </label>
+
+              <label>
+                誰向け？
+                <input id="audience" name="audience" type="text" placeholder="例: クライアント / 社内メンバー / 初めて見る人" />
+              </label>
+
+              <label>
+                出してほしい形
+                <select id="outputType" name="outputType">
+                  <option value="auto">おまかせ</option>
+                  <option value="outline">構成案</option>
+                  <option value="document">文章・ドキュメント</option>
+                  <option value="table">表形式</option>
+                  <option value="html">HTML</option>
+                  <option value="checklist">チェックリスト</option>
+                  <option value="slides">スライド構成</option>
+                  <option value="image">画像として出力（PNG）</option>
+                </select>
+              </label>
+
+              <label>
+                AIに読み込ませたい情報
+                <textarea id="materials" name="materials" rows="3" placeholder="例: 既存サイトURL、企画メモ、議事録、競合情報、文字起こしなど"></textarea>
+                <small class="field-hint">ここに貼った情報をAIが参照します。なければ空欄でOK。</small>
+              </label>
+
+              <label>
+                守ってほしい条件
+                <textarea id="constraints" name="constraints" rows="3" placeholder="例: 専門用語を減らす、A4 1枚、初心者にもわかる言葉で"></textarea>
+              </label>
+            </fieldset>
+
+            <fieldset id="optionsFieldset">
+              <legend>追加対応（任意）</legend>
+              <p class="field-hint" style="margin-bottom:8px">チェックしたものだけプロンプトに指示として入ります。</p>
+              <div class="check-list" id="optionsContainer" aria-label="追加オプション"></div>
+            </fieldset>
+
+            <fieldset id="fieldset-finish">
+              <legend>仕上げ</legend>
+
+              <label>
+                文章のトーン
+                <select id="tone" name="tone">
+                  <option value="clear">わかりやすく</option>
+                  <option value="business">ビジネス向け</option>
+                  <option value="friendly">やわらかく</option>
+                  <option value="professional">プロっぽく</option>
+                  <option value="concise">短く簡潔に</option>
+                </select>
+              </label>
+
+              <label>
+                詳しさ
+                <select id="detail" name="detail">
+                  <option value="balanced">ちょうどよく</option>
+                  <option value="simple">短め</option>
+                  <option value="deep">かなり詳しく</option>
+                </select>
+              </label>
+
+              <div class="check-list" aria-label="オプション">
+                <label class="check-row">
+                  <input id="inferMissing" name="inferMissing" type="checkbox" checked />
+                  <span>足りない情報は自然に補ってもらう</span>
+                </label>
+                <label class="check-row">
+                  <input id="askQuestions" name="askQuestions" type="checkbox" />
+                  <span>不明点があれば質問してもらう</span>
+                </label>
+                <label class="check-row">
+                  <input id="includeSummary" name="includeSummary" type="checkbox" checked />
+                  <span>最初に要望まとめを入れる</span>
+                </label>
+              </div>
+            </fieldset>
+          </form>
+
+          <aside class="output-panel">
+            <div class="output-header">
+              <div>
+                <p class="eyebrow">Ready to Paste</p>
+                <h2>完成プロンプト</h2>
+              </div>
+              <button class="secondary-button" id="shareBtn" type="button">共有リンク</button>
+            </div>
+
+            <textarea id="promptOutput" class="prompt-output" readonly></textarea>
+
+            <div class="preview-strip" aria-label="設定プレビュー">
+              <div>
+                <span class="preview-label">種類</span>
+                <strong id="previewMode">企画書・提案書</strong>
+              </div>
+              <div>
+                <span class="preview-label">出力</span>
+                <strong id="previewOutput">おまかせ</strong>
+              </div>
+              <div>
+                <span class="preview-label">トーン</span>
+                <strong id="previewTone">わかりやすく</strong>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </main>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <footer class="site-footer">
+      <div class="site-footer-inner">
+        <span>© 2026 Prompt Maker</span>
+        <nav class="footer-links">
+          <a href="./disclaimer.html" target="_blank">免責事項</a>
+          <a href="./privacy.html" target="_blank">プライバシーポリシー</a>
+        </nav>
+      </div>
+    </footer>
+
+    <script src="./app.js"></script>
+  </body>
+</html>
