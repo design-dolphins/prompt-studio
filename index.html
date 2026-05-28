@@ -14,11 +14,10 @@
           <div>
             <p class="eyebrow">Prompt Maker</p>
             <h1>やりたいことを選んで、コピペ用プロンプトを作る</h1>
-            <p class="lead-text">作りたいものを選んで、ラフな相談を書くだけ。右側に別チャットへ貼れるプロンプトができます。</p>
+            <p class="lead-text">作りたいものを選んで、ラフな相談を書くだけ。別チャットへ貼れるプロンプトができます。</p>
           </div>
           <div class="topbar-actions">
             <button class="icon-button" id="resetBtn" type="button" aria-label="初期化" title="初期化">↺</button>
-            <button class="primary-button" id="copyBtn" type="button">コピー</button>
           </div>
         </header>
 
@@ -388,7 +387,10 @@
                 <p class="eyebrow">Ready to Paste</p>
                 <h2>完成プロンプト</h2>
               </div>
-              <button class="secondary-button" id="shareBtn" type="button">共有リンク</button>
+              <div style="display:flex; gap:8px; align-items:center;">
+                <button class="secondary-button" id="shareBtn" type="button">共有リンク</button>
+                <button class="primary-button" id="copyBtn" type="button">コピー</button>
+              </div>
             </div>
 
             <textarea id="promptOutput" class="prompt-output" readonly></textarea>

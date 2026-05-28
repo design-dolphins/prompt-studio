@@ -389,7 +389,7 @@ const defaults = {
   mode: "proposal",
   request: "",
   background: "",
-  audience: "クライアントに提案する人",
+  audience: "",
   outputType: "outline",
   materials: "",
   constraints: "専門用語を使いすぎず、初めて読む人にもわかりやすくする",
