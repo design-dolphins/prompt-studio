@@ -57,6 +57,11 @@ const fields = {
   customRole: document.querySelector("#customRole"),
   customConditions: document.querySelector("#customConditions"),
   customTask: document.querySelector("#customTask"),
+  policyType: document.querySelector("#policyType"),
+  policyCompany: document.querySelector("#policyCompany"),
+  policyIssue: document.querySelector("#policyIssue"),
+  policyGoal: document.querySelector("#policyGoal"),
+  policyMaterials: document.querySelector("#policyMaterials"),
   bsIssue: document.querySelector("#bsIssue"),
   bsTarget: document.querySelector("#bsTarget"),
   bsContext: document.querySelector("#bsContext"),
@@ -96,7 +101,7 @@ const modeHints = {
 const exampleRequests = {
   proposal: "",
   wireframe: "",
-  policy: "育児休暇制度の改定内容を整理して社員向けに共有したい",
+  policy: "",
   "ui-review": "",
   "design-direction": "",
   email: "納期延期をクライアントに丁重にお願いするメールを書きたい",
@@ -510,6 +515,46 @@ function buildCustomPrompt(state) {
   ].filter(Boolean).join("\n");
 }
 
+function buildPolicyPrompt(state) {
+  const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
+
+  const infoLines = [
+    `- 制度の種類：${state.policyType || "評価制度"}`,
+    opt("業種・規模", state.policyCompany),
+    opt("困っていること", state.policyIssue),
+    opt("どうなりたいか", state.policyGoal),
+    opt("補足", state.request),
+  ].filter(Boolean);
+
+  return [
+    "あなたは「組織開発コンサルタント兼制度設計ファシリテーターAI」です。",
+    "以下の情報をもとに、実務レベルで使える社内制度の設計方針と具体案を提案してください。",
+    "",
+    "# 【入力情報】",
+    ...infoLines,
+    (state.policyMaterials || "").trim() ? `\n# 【参考情報】\n${state.policyMaterials.trim()}` : "",
+    "",
+    "# 【制約条件】",
+    "- 「運用できる現実解」を優先し、理想論だけで終わらせない",
+    "- 中小〜中堅企業でも運用可能なレベル感で設計する",
+    "- メリット・デメリット・運用上のリスクを必ず併記する",
+    "- 制度の内容だけでなく「導入プロセス」と「社内浸透施策」にも言及する",
+    "- 専門用語は社内メンバーにも伝わる言葉に噛み砕く",
+    "- 情報が不足している場合は一般的な中小〜中堅企業を想定して補完する",
+    "",
+    "# 【出力形式】",
+    "1. 課題整理（現状の問題・ボトルネック・不満ポイント）",
+    "2. 目指す状態（制度設計で重視すべき軸・実現したい文化）",
+    "3. 制度設計の全体方針",
+    "4. 具体的な制度案（2〜3パターン：概要・メリット・デメリット・向いている規模）",
+    "5. 導入プロセス案（準備→試験運用→本格導入→改善サイクル）",
+    "6. 社内浸透・運用定着のための施策",
+    "7. 今後の検討・ディスカッション用の論点リスト",
+    "",
+    "以上の内容を確認しました。それでは今すぐ作業を開始してください。途中で質問はせず、今ある情報から最善の形で完成させてください。",
+  ].filter(Boolean).join("\n");
+}
+
 function buildBrainstormPrompt(state) {
   const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
 
@@ -725,12 +770,7 @@ function buildResearchPrompt(state) {
 }
 
 function buildUiReviewPrompt(state) {
-  const volumeInstructions = {
-    brief: "各項目は要点のみ箇条書きで簡潔にまとめてください。",
-    standard: "各項目はポイントを押さえて整理してください。",
-    detail: "各項目を詳細に展開し、具体例や根拠も含めてください。",
-  };
-  const volumeInstruction = volumeInstructions[state.uiVolume] || volumeInstructions.standard;
+  const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
   const perspectiveLabels = {
     overall: "UI/UX総合",
     cv: "コンバージョン改善",
@@ -740,30 +780,52 @@ function buildUiReviewPrompt(state) {
   };
   const perspective = perspectiveLabels[state.uiPerspective] || "UI/UX総合";
 
-  const lines = [
-    "添付のスクリーンショットを分析してください。",
-    "",
-    `# レビュー観点：${perspective}`,
-  ];
-  if (state.uiPageType) lines.push(`# ページの種類：${state.uiPageType}`);
-  if (state.uiTarget) lines.push(`# ターゲットユーザー：${state.uiTarget}`);
-  if ((state.uiGoal || "").trim()) lines.push(`# 改善したいこと：${state.uiGoal.trim()}`);
-  if ((state.request || "").trim()) lines.push(`# 補足：${state.request.trim()}`);
+  const volumeInstructions = {
+    brief: "各項目は要点のみ箇条書きで簡潔にまとめてください。",
+    standard: "各項目はポイントを押さえて整理してください。",
+    detail: "各項目を詳細に展開し、具体例や根拠も含めてください。",
+  };
+  const volumeInstruction = volumeInstructions[state.uiVolume] || volumeInstructions.standard;
 
-  lines.push(
+  const infoLines = [
+    `- レビュー観点：${perspective}`,
+    opt("ページの種類", state.uiPageType),
+    opt("ターゲットユーザー", state.uiTarget),
+    opt("改善したいこと", state.uiGoal),
+    opt("補足", state.request),
+  ].filter(Boolean);
+
+  return [
+    "あなたは「UI/UXコンサルタント兼プロダクトレビューAI」です。",
+    "添付のスクリーンショット・URL・構成情報をもとに、実務レベルのUI/UXレビューと改善提案を行ってください。",
     "",
-    "# 出力形式",
-    `${volumeInstruction}`,
+    "# 【レビュー情報】",
+    ...infoLines,
+    "",
+    "# 【制約条件】",
+    "- 抽象論ではなく「改善可能な指摘」を行う",
+    "- UI / UX / 情報設計 / CTA / コピーを分けて整理する",
+    "- ユーザー心理ベースで説明する",
+    "- 各指摘に優先度（高 / 中 / 低）を付与する",
+    "- 改善理由を明示する",
+    "- 必要に応じてA/B案を提示する",
+    "- 実装難易度も考慮する",
+    "- デザインだけでなく体験導線まで見る",
+    "",
+    "# 【出力形式】",
+    volumeInstruction,
     "以下の構成でレビューしてください。",
-    "1. 総評（3行程度）",
-    "2. 良い点（箇条書き）",
-    "3. 改善点（優先度高→低の順。各項目に「問題 / 理由 / 改善案」を含める）",
-    "4. すぐ直せる改善アクション TOP3",
     "",
-    "以上の内容を確認しました。それでは今すぐレビューを開始してください。"
-  );
-
-  return lines.join("\n");
+    "1. 総評（全体UX評価）：良い点 / 大きな課題",
+    "2. UIレビュー：レイアウト・視線誘導・タイポ・配色・余白・一貫性",
+    "3. UXレビュー：導線・理解コスト・離脱要因・不安要素・CTA設計",
+    "4. 情報設計レビュー：優先順位・コンテンツ構造・読みやすさ・情報不足/過多",
+    "5. 改善提案一覧（表形式）：課題 / 改善案 / 理由 / 優先度 / 実装難易度",
+    "6. A/B改善案（必要に応じて）",
+    "7. 追加で確認すべきデータ・仮説",
+    "",
+    "以上の内容を確認しました。それでは今すぐレビューを開始してください。",
+  ].join("\n");
 }
 
 function buildProposalPrompt(state) {
@@ -919,10 +981,11 @@ function updateIllustVisibility(mode) {
   const isMinutes   = mode === "minutes";
   const isBrainstorm = mode === "brainstorm";
   const isCustom    = mode === "custom";
+  const isPolicy    = mode === "policy";
 
   // 専用フィールドがあるモード（標準フォームを隠す）
   const hasDedicated = isIllust || isWireframe || isProposal || isUiReview ||
-                       isDesign || isResearch || isMinutes || isBrainstorm || isCustom;
+                       isDesign || isResearch || isMinutes || isBrainstorm || isCustom || isPolicy;
 
   // 各専用fieldsetの表示制御
   document.querySelector("#fieldset-illust").style.display    = isIllust    ? "" : "none";
@@ -933,6 +996,7 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-research").style.display  = isResearch  ? "" : "none";
   document.querySelector("#fieldset-minutes").style.display   = isMinutes   ? "" : "none";
   document.querySelector("#fieldset-brainstorm").style.display = isBrainstorm ? "" : "none";
+  document.querySelector("#fieldset-policy").style.display    = isPolicy    ? "" : "none";
   document.querySelector("#fieldset-custom").style.display    = isCustom    ? "" : "none";
 
   // 標準フォームの表示制御
@@ -952,10 +1016,9 @@ function updateIllustVisibility(mode) {
 
   // メール依頼文は背景・状況と出してほしい形を非表示
   const isEmail = mode === "email";
-  const isPolicy = mode === "policy";
   const bgRow = document.querySelector("#backgroundRow");
   const otRow = document.querySelector("#outputTypeRow");
-  if (bgRow) bgRow.style.display = isEmail ? "none" : "";
+  if (bgRow) bgRow.style.display = (isEmail || isPolicy) ? "none" : "";
   if (otRow) otRow.style.display = (isEmail || isPolicy) ? "none" : "";
 
   // 補足欄のラベルとplaceholderをモードに合わせて変更
@@ -1062,6 +1125,7 @@ function buildPrompt(state) {
   if (state.mode === "brainstorm") return buildBrainstormPrompt(state);
   if (state.mode === "custom") return buildCustomPrompt(state);
   if (state.mode === "wireframe") return buildWireframePrompt(state);
+  if (state.mode === "policy") return buildPolicyPrompt(state);
 
   const mode = modeLabels[state.mode];
   const role = roleMap[state.mode];
