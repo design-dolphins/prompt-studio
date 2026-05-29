@@ -27,6 +27,7 @@ const fields = {
   wfIndustry: document.querySelector("#wfIndustry"),
   wfPageName: document.querySelector("#wfPageName"),
   wfPagePurpose: document.querySelector("#wfPagePurpose"),
+  wfMaterials: document.querySelector("#wfMaterials"),
   wfSections: document.querySelector("#wfSections"),
   wfNotes: document.querySelector("#wfNotes"),
   propIndustry: document.querySelector("#propIndustry"),
@@ -466,6 +467,8 @@ function buildWireframePrompt(state) {
     "- 資料にない情報を推測で補った場合はHTML末尾に「推測で補った内容」として箇条書きで明記する。",
   ].join("\n");
 
+  const materialsText = (state.wfMaterials || "").trim();
+
   return [
     "あなたは「Webサイトの情報設計と低忠実度ワイヤーフレームを作るUI設計者」です。",
     "以下の情報をもとに、ワイヤーフレームを作成してください。",
@@ -476,6 +479,7 @@ function buildWireframePrompt(state) {
     sectionsText,
     (state.wfNotes || "").trim() ? `\n【補足】\n${state.wfNotes.trim()}` : "",
     (state.request || "").trim() ? `\n【背景・ひとこと】\n${state.request.trim()}` : "",
+    materialsText ? `\n# 【参考資料】\n以下の資料をもとにテキスト・構成・導線を考えてください。\n${materialsText}` : "",
     "",
     "# 【デザインルール】",
     "- フォント：Noto Sans JP（Regular〜Bold）",
@@ -809,6 +813,7 @@ function buildProposalPrompt(state) {
     "3. 目指す状態（To-Be）：実現したい成果・ユーザー変化・事業インパクト",
     "4. ソリューション概要：提案内容・提供価値・差別化ポイント",
     "5. スライド構成案（10〜20枚）| No | スライドタイトル | 伝えたいこと | 主な内容 |",
+    "   以下の流れを基本にしてください：表紙 / 背景・課題 / 課題深掘り / 解決方針 / ソリューション詳細 / UI・UXイメージ / 実行フロー / スケジュール / KPI・成果想定 / 体制 / まとめ・CTA",
     "6. UIモック化向け抽出情報（Hero / Feature / Flow / CTA / コンテンツ構造）",
     "7. 追加で検討すべき論点：リスク・不足情報・確認事項",
     "",
