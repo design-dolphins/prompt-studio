@@ -406,7 +406,7 @@ const defaults = {
   audience: "",
   outputType: "outline",
   materials: "",
-  constraints: "専門用語を使いすぎず、初めて読む人にもわかりやすくする",
+  constraints: "",
   tone: "clear",
   detail: "balanced",
   inferMissing: true,
