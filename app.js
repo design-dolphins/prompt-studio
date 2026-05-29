@@ -56,6 +56,7 @@ const fields = {
   minAttendees: document.querySelector("#minAttendees"),
   customRole: document.querySelector("#customRole"),
   customConditions: document.querySelector("#customConditions"),
+  customTask: document.querySelector("#customTask"),
   bsIssue: document.querySelector("#bsIssue"),
   bsTarget: document.querySelector("#bsTarget"),
   bsContext: document.querySelector("#bsContext"),
@@ -413,7 +414,7 @@ const defaults = {
 };
 
 function buildCustomPrompt(state) {
-  const task = (state.request || "").trim();
+  const task = (state.customTask || "").trim();
   const role = (state.customRole || "").trim();
   const conditions = (state.customConditions || "").trim();
 
@@ -769,58 +770,54 @@ function updateWfSectionsPlaceholder(pageType) {
 }
 
 function updateIllustVisibility(mode) {
-  const isIllust = mode === "illust";
+  const isIllust    = mode === "illust";
   const isWireframe = mode === "wireframe";
-  const isProposal = mode === "proposal";
-  const isUiReview = mode === "ui-review";
-  const isDesign = mode === "design-direction";
-  const isResearch = mode === "research";
-  const isMinutes = mode === "minutes";
+  const isProposal  = mode === "proposal";
+  const isUiReview  = mode === "ui-review";
+  const isDesign    = mode === "design-direction";
+  const isResearch  = mode === "research";
+  const isMinutes   = mode === "minutes";
   const isBrainstorm = mode === "brainstorm";
-  const isCustom = mode === "custom";
-  const hideStandard = isIllust || isWireframe || isProposal || isUiReview || isDesign || isResearch || isMinutes || isBrainstorm || isCustom;
-  document.querySelector("#fieldset-request").style.display = (isIllust || isMinutes) ? "none" : "";
-  document.querySelector("#fieldset-custom").style.display = isCustom ? "" : "none";
-  document.querySelector("#fieldset-brainstorm").style.display = isBrainstorm ? "" : "none";
-  document.querySelector("#fieldset-minutes").style.display = isMinutes ? "" : "none";
-  document.querySelector("#fieldset-design").style.display = isDesign ? "" : "none";
-  document.querySelector("#fieldset-research").style.display = isResearch ? "" : "none";
-  document.querySelector("#fieldset-uireview").style.display = isUiReview ? "" : "none";
-  document.querySelector("#fieldset-proposal").style.display = isProposal ? "" : "none";
+  const isCustom    = mode === "custom";
+
+  // 専用フィールドがあるモード（標準フォームを隠す）
+  const hasDedicated = isIllust || isWireframe || isProposal || isUiReview ||
+                       isDesign || isResearch || isMinutes || isBrainstorm || isCustom;
+
+  // 各専用fieldsetの表示制御
+  document.querySelector("#fieldset-illust").style.display    = isIllust    ? "" : "none";
   document.querySelector("#fieldset-wireframe").style.display = isWireframe ? "" : "none";
-  document.querySelector("#fieldset-illust").style.display = isIllust ? "" : "none";
-  document.querySelector("#fieldset-extras").style.display = hideStandard ? "none" : "";
-  document.querySelector("#optionsFieldset").style.display = hideStandard ? "none" : "";
-  document.querySelector("#fieldset-finish").style.display = hideStandard ? "none" : "";
-  const requestLegend = document.querySelector("#requestLegend");
-  const requestTextarea = document.querySelector("#request");
-  if (isIllust) {
-    requestLegend.textContent = "テーマ";
-    requestTextarea.placeholder = "例：東京の下町、コーヒー文化、アウトドアライフ";
-  } else if (isWireframe) {
-    requestLegend.textContent = "作成の背景・ひとこと（任意）";
-    requestTextarea.placeholder = "例：初回クライアント提案用。シンプルに見せたい。";
-  } else if (isProposal) {
-    requestLegend.textContent = "補足・その他（任意）";
-    requestTextarea.placeholder = "例：競合他社より提案資料が弱い、スライド20枚以内で作りたい";
-  } else if (isUiReview) {
-    requestLegend.textContent = "補足・その他（任意）";
-    requestTextarea.placeholder = "例：スマホ表示で見てほしい、競合と比べて弱い部分を知りたい";
-  } else if (isDesign) {
-    requestLegend.textContent = "補足・その他（任意）";
-    requestTextarea.placeholder = "例：制作チームに外注予定、A/B案もほしい";
-  } else if (isCustom) {
-    requestLegend.textContent = "やりたいこと";
-    requestTextarea.placeholder = "例：新サービスのLPコピーを考えてほしい、議事録を英語に翻訳してほしい";
-  } else if (isBrainstorm) {
-    requestLegend.textContent = "補足・その他（任意）";
-    requestTextarea.placeholder = "例：箇条書き強化版で出してほしい、Slack共有用に短くしたい";
-  } else if (isResearch) {
-    requestLegend.textContent = "補足・その他（任意）";
-    requestTextarea.placeholder = "例：経営会議向けにまとめたい、SEO観点も含めてほしい";
-  } else {
-    requestLegend.textContent = "依頼内容";
-    requestTextarea.placeholder = "ここに相談内容・タスクの詳細を入力してください";
+  document.querySelector("#fieldset-proposal").style.display  = isProposal  ? "" : "none";
+  document.querySelector("#fieldset-uireview").style.display  = isUiReview  ? "" : "none";
+  document.querySelector("#fieldset-design").style.display    = isDesign    ? "" : "none";
+  document.querySelector("#fieldset-research").style.display  = isResearch  ? "" : "none";
+  document.querySelector("#fieldset-minutes").style.display   = isMinutes   ? "" : "none";
+  document.querySelector("#fieldset-brainstorm").style.display = isBrainstorm ? "" : "none";
+  document.querySelector("#fieldset-custom").style.display    = isCustom    ? "" : "none";
+
+  // 標準フォームの表示制御
+  document.querySelector("#fieldset-extras").style.display  = hasDedicated ? "none" : "";
+  document.querySelector("#optionsFieldset").style.display  = hasDedicated ? "none" : "";
+  document.querySelector("#fieldset-finish").style.display  = hasDedicated ? "none" : "";
+
+  // 補足欄: illust/minutes/customは非表示、他の専用モードは表示（下部に）
+  const hideRequest = isIllust || isMinutes || isCustom;
+  document.querySelector("#fieldset-request").style.display = hideRequest ? "none" : "";
+
+  // 補足欄のラベルとplaceholderをモードに合わせて変更
+  if (!hideRequest) {
+    const requestLegend  = document.querySelector("#requestLegend");
+    const requestTextarea = document.querySelector("#request");
+    if (isWireframe) {
+      requestLegend.textContent = "作成の背景・ひとこと（任意）";
+      requestTextarea.placeholder = "例：初回クライアント提案用。シンプルに見せたい。";
+    } else if (hasDedicated) {
+      requestLegend.textContent = "補足・その他（任意）";
+      requestTextarea.placeholder = "例：追加で気になる点や希望があれば";
+    } else {
+      requestLegend.textContent = "依頼内容";
+      requestTextarea.placeholder = "ここに相談内容・タスクの詳細を入力してください";
+    }
   }
 }
 
