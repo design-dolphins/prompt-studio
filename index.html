@@ -63,15 +63,6 @@
                 <input id="designTone" name="designTone" type="text" placeholder="例：高級感・信頼感、ミニマル、ポップ、テック感、温かみ" />
               </label>
 
-              <label>
-                参考サイト・URL（任意）
-                <input id="designRef" name="designRef" type="text" placeholder="例：https://example.com、競合Aサイト" />
-              </label>
-
-              <label>
-                NG表現・避けたい方向性（任意）
-                <input id="designNg" name="designNg" type="text" placeholder="例：古くさい印象、過剰な装飾、暗い配色" />
-              </label>
             </fieldset>
 
             <fieldset id="fieldset-custom" style="display:none">
@@ -117,21 +108,6 @@
                 <input id="bsGoal" name="bsGoal" type="text" placeholder="例：売上UP、認知拡大、CV向上、採用強化、UI改善" />
               </label>
 
-              <label>
-                施策のトーン
-                <select id="bsTone" name="bsTone">
-                  <option value="バランス重視">バランス重視</option>
-                  <option value="攻め・革新的">攻め・革新的</option>
-                  <option value="守り・保守的">守り・保守的</option>
-                  <option value="低コスト優先">低コスト優先</option>
-                  <option value="スピード優先">スピード優先</option>
-                </select>
-              </label>
-
-              <label>
-                参考情報・素材（任意）
-                <textarea id="bsMaterials" name="bsMaterials" rows="3" placeholder="例：既存施策一覧、競合情報、ターゲット情報、予算感、USP"></textarea>
-              </label>
             </fieldset>
 
             <fieldset id="fieldset-minutes" style="display:none">
@@ -185,15 +161,6 @@
                 </select>
               </label>
 
-              <label>
-                対象企業・URL（任意）
-                <textarea id="researchTargets" name="researchTargets" rows="3" placeholder="例：A社（https://...）、B社、C社"></textarea>
-              </label>
-
-              <label>
-                特に見たい観点（任意）
-                <input id="researchFocus" name="researchFocus" type="text" placeholder="例：価格、UX、SEO、集客、機能比較" />
-              </label>
             </fieldset>
 
             <fieldset id="fieldset-uireview" style="display:none">
@@ -218,20 +185,6 @@
               <label>
                 ターゲットユーザー
                 <input id="uiTarget" name="uiTarget" type="text" placeholder="例：30代女性、BtoB企業の担当者、初めて訪れる人" />
-              </label>
-
-              <label>
-                改善したいこと（任意）
-                <textarea id="uiGoal" name="uiGoal" rows="2" placeholder="例：CVRを上げたい、離脱率を下げたい、信頼感を出したい"></textarea>
-              </label>
-
-              <label>
-                出力のボリューム
-                <select id="uiVolume" name="uiVolume">
-                  <option value="standard">標準（各項目ポイントを押さえて）</option>
-                  <option value="brief">簡潔（要点のみ）</option>
-                  <option value="detail">詳細（各項目を詳しく）</option>
-                </select>
               </label>
             </fieldset>
 
@@ -261,11 +214,6 @@
               <label>
                 提案する施策
                 <textarea id="propSolution" name="propSolution" rows="2" placeholder="例：サイトリニューアル、UI改善、SEO、コンテンツ設計"></textarea>
-              </label>
-
-              <label>
-                その他・補足（任意）
-                <textarea id="propExtra" name="propExtra" rows="3" placeholder="例：競合との差別化：地域密着、KPI：CV数150%向上、スケジュール：3ヶ月、体制：PM1名"></textarea>
               </label>
             </fieldset>
 
@@ -369,6 +317,61 @@
                   <small class="field-hint">空欄にするとAIが提案します。</small>
                 </label>
               </div>
+
+              <div id="uiOptionalGroup" style="display:none">
+                <label>
+                  改善したいこと（任意）
+                  <textarea id="uiGoal" name="uiGoal" rows="2" placeholder="例：CVRを上げたい、離脱率を下げたい、信頼感を出したい"></textarea>
+                </label>
+                <label>
+                  出力のボリューム
+                  <select id="uiVolume" name="uiVolume">
+                    <option value="standard">標準（各項目ポイントを押さえて）</option>
+                    <option value="brief">簡潔（要点のみ）</option>
+                    <option value="detail">詳細（各項目を詳しく）</option>
+                  </select>
+                </label>
+              </div>
+
+              <div id="designOptionalGroup" style="display:none">
+                <label>
+                  参考サイト・URL（任意）
+                  <input id="designRef" name="designRef" type="text" placeholder="例：https://example.com、競合Aサイト" />
+                </label>
+                <label>
+                  NG表現・避けたい方向性（任意）
+                  <input id="designNg" name="designNg" type="text" placeholder="例：古くさい印象、過剰な装飾、暗い配色" />
+                </label>
+              </div>
+
+              <div id="researchOptionalGroup" style="display:none">
+                <label>
+                  対象企業・URL（任意）
+                  <textarea id="researchTargets" name="researchTargets" rows="3" placeholder="例：A社（https://...）、B社、C社"></textarea>
+                </label>
+                <label>
+                  特に見たい観点（任意）
+                  <input id="researchFocus" name="researchFocus" type="text" placeholder="例：価格、UX、SEO、集客、機能比較" />
+                </label>
+              </div>
+
+              <div id="brainstormOptionalGroup" style="display:none">
+                <label>
+                  施策のトーン
+                  <select id="bsTone" name="bsTone">
+                    <option value="バランス重視">バランス重視</option>
+                    <option value="攻め・革新的">攻め・革新的</option>
+                    <option value="守り・保守的">守り・保守的</option>
+                    <option value="低コスト優先">低コスト優先</option>
+                    <option value="スピード優先">スピード優先</option>
+                  </select>
+                </label>
+                <label>
+                  参考情報・素材（任意）
+                  <textarea id="bsMaterials" name="bsMaterials" rows="3" placeholder="例：既存施策一覧、競合情報、ターゲット情報、予算感、USP"></textarea>
+                </label>
+              </div>
+
               <legend id="requestLegend">依頼内容</legend>
               <label id="requestLabel">
                 <textarea id="request" name="request" rows="4" placeholder=""></textarea>
@@ -384,17 +387,17 @@
             <fieldset id="fieldset-extras">
               <legend>必要なら足す</legend>
 
-              <label>
+              <label id="backgroundRow">
                 背景・状況
                 <textarea id="background" name="background" rows="3" placeholder="例: 新規サービスの提案。クライアントに初回提案する"></textarea>
               </label>
 
               <label>
-                誰向け？
+                対象
                 <input id="audience" name="audience" type="text" placeholder="例: クライアント / 社内メンバー / 初めて見る人" />
               </label>
 
-              <label>
+              <label id="outputTypeRow">
                 出してほしい形
                 <select id="outputType" name="outputType">
                   <option value="auto">おまかせ</option>

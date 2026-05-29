@@ -34,7 +34,6 @@ const fields = {
   propGoal: document.querySelector("#propGoal"),
   propTarget: document.querySelector("#propTarget"),
   propSolution: document.querySelector("#propSolution"),
-  propExtra: document.querySelector("#propExtra"),
   uiPerspective: document.querySelector("#uiPerspective"),
   uiPageType: document.querySelector("#uiPageType"),
   uiTarget: document.querySelector("#uiTarget"),
@@ -633,7 +632,7 @@ function buildProposalPrompt(state) {
     opt("Webサイトの目的", state.propGoal),
     opt("ターゲット", state.propTarget),
     opt("提案する施策", state.propSolution),
-    opt("その他・補足", state.propExtra),
+    opt("その他・補足", state.request),
   ].filter(Boolean);
 
   const inputSection = inputLines.length > 0
@@ -805,6 +804,17 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-request").style.display = hideRequest ? "none" : "";
   document.querySelector("#wfSectionsGroup").style.display = isWireframe ? "" : "none";
   document.querySelector("#wfNotesGroup").style.display = isWireframe ? "" : "none";
+  document.querySelector("#uiOptionalGroup").style.display = isUiReview ? "" : "none";
+  document.querySelector("#designOptionalGroup").style.display = isDesign ? "" : "none";
+  document.querySelector("#researchOptionalGroup").style.display = isResearch ? "" : "none";
+  document.querySelector("#brainstormOptionalGroup").style.display = isBrainstorm ? "" : "none";
+
+  // メール依頼文は背景・状況と出してほしい形を非表示
+  const isEmail = mode === "email";
+  const bgRow = document.querySelector("#backgroundRow");
+  const otRow = document.querySelector("#outputTypeRow");
+  if (bgRow) bgRow.style.display = isEmail ? "none" : "";
+  if (otRow) otRow.style.display = isEmail ? "none" : "";
 
   // 補足欄のラベルとplaceholderをモードに合わせて変更
   if (!hideRequest) {
