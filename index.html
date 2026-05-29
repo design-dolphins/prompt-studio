@@ -207,20 +207,19 @@
               <legend>リサーチ・競合分析設定</legend>
 
               <label>
-                調査テーマ
-                <input id="researchTheme" name="researchTheme" type="text" placeholder="例：美容クリニックの競合サイト、工務店の採用ページ、BtoB製造業のWebデザイン傾向" />
+                調査目的
+                <select id="researchPurpose" name="researchPurpose">
+                  <option value="競合サイトの比較">競合サイトの比較</option>
+                  <option value="新規事業・サービスの検討">新規事業・サービスの検討</option>
+                  <option value="提案・企画書づくり">提案・企画書づくり</option>
+                  <option value="デザイン・UI研究">デザイン・UI研究</option>
+                  <option value="市場・業界の把握">市場・業界の把握</option>
+                </select>
               </label>
 
               <label>
-                調査目的
-                <select id="researchPurpose" name="researchPurpose">
-                  <option value="競合比較">競合比較</option>
-                  <option value="新規事業の検討">新規事業の検討</option>
-                  <option value="提案書・企画書作成">提案書・企画書作成</option>
-                  <option value="UI/UX研究">UI/UX研究</option>
-                  <option value="投資・意思決定判断">投資・意思決定判断</option>
-                  <option value="市場全体の把握">市場全体の把握</option>
-                </select>
+                調査テーマ
+                <input id="researchTheme" name="researchTheme" type="text" placeholder="例：美容クリニックの競合サイト、工務店の採用ページ" />
               </label>
 
             </fieldset>

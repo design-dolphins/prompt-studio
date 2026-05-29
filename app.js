@@ -2020,7 +2020,7 @@ function buildResearchPrompt(state) {
   const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
   const infoLines = [
     opt("調査テーマ", state.researchTheme),
-    `- 調査目的：${state.researchPurpose || "競合比較"}`,
+    `- 調査目的：${state.researchPurpose || "競合サイトの比較"}`,
     opt("対象企業・URL", state.researchTargets),
     opt("特に見たい観点", state.researchFocus),
     opt("補足", state.request),
@@ -2277,6 +2277,11 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-uireview").style.display  = isUiReview  ? "" : "none";
   document.querySelector("#fieldset-design").style.display    = isDesign    ? "" : "none";
   document.querySelector("#fieldset-research").style.display  = isResearch  ? "" : "none";
+  if (isResearch) {
+    const theme = document.querySelector("#researchTheme");
+    const purpose = document.querySelector("#researchPurpose");
+    if (theme && purpose) theme.placeholder = researchThemePlaceholders[purpose.value] || "";
+  }
   document.querySelector("#fieldset-minutes").style.display   = isMinutes   ? "" : "none";
   document.querySelector("#fieldset-brainstorm").style.display = isBrainstorm ? "" : "none";
   document.querySelector("#fieldset-email").style.display     = isEmailMode ? "" : "none";
@@ -2618,5 +2623,19 @@ document.querySelector("#shareBtn").addEventListener("click", shareLink);
 document.querySelector("#resetBtn").addEventListener("click", resetForm);
 fields.illustFigure.addEventListener("change", () => updateFramingVisibility(fields.illustFigure.value));
 fields.wfPageType.addEventListener("change", () => updateWfSectionsPlaceholder(fields.wfPageType.value));
+
+const researchThemePlaceholders = {
+  "競合サイトの比較": "例：美容クリニックの競合サイト、工務店の採用ページ",
+  "新規事業・サービスの検討": "例：類似サービスのWebサイト、国内外の参入事例サイト",
+  "提案・企画書づくり": "例：クライアント業界の主要Webサイト、参考にしたいデザイン事例",
+  "デザイン・UI研究": "例：予約サイトの導線設計、ECサイトのチェックアウトUI",
+  "市場・業界の把握": "例：国内の工務店サイト傾向、化粧品ブランドのLP",
+};
+
+fields.researchPurpose.addEventListener("change", () => {
+  const theme = document.querySelector("#researchTheme");
+  if (theme) theme.placeholder = researchThemePlaceholders[fields.researchPurpose.value] || "";
+  updatePrompt();
+});
 
 applyState(loadFromUrl());
