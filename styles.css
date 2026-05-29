@@ -146,10 +146,6 @@ legend {
   font-weight: 850;
 }
 
-#requestLegend {
-  color: var(--muted);
-  font-weight: 720;
-}
 
 label {
   display: grid;
