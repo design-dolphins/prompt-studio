@@ -818,7 +818,7 @@ function updateIllustVisibility(mode) {
 
   // 補足欄のラベルとplaceholderをモードに合わせて変更
   if (!hideRequest) {
-    const requestLegend  = document.querySelector("#requestLegend");
+    const requestLegend  = document.querySelector("#requestLabelText");
     const requestTextarea = document.querySelector("#request");
     if (isWireframe) {
       requestLegend.textContent = "作成の背景・ひとこと（任意）";
