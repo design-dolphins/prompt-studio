@@ -21,6 +21,7 @@ const fields = {
   illustFigure: document.querySelector("#illustFigure"),
   illustFigureCount: document.querySelector("#illustFigureCount"),
   illustFraming: document.querySelector("#illustFraming"),
+  illustTheme: document.querySelector("#illustTheme"),
   wfPageType: document.querySelector("#wfPageType"),
   wfCompany: document.querySelector("#wfCompany"),
   wfIndustry: document.querySelector("#wfIndustry"),
@@ -661,7 +662,7 @@ function buildProposalPrompt(state) {
 }
 
 function buildIllustPrompt(state) {
-  const theme = state.request || 'テーマを入力してください';
+  const theme = (state.illustTheme || state.request || '').trim() || 'テーマを入力してください';
 
   const colorInstructions = {
     "2": "高度にコントロールされた2色のみを使用",
@@ -758,6 +759,7 @@ function updateIllustVisibility(mode) {
   const isMinutes = mode === "minutes";
   const isBrainstorm = mode === "brainstorm";
   const hideStandard = isIllust || isWireframe || isProposal || isUiReview || isDesign || isResearch || isMinutes || isBrainstorm;
+  document.querySelector("#fieldset-request").style.display = isIllust ? "none" : "";
   document.querySelector("#fieldset-brainstorm").style.display = isBrainstorm ? "" : "none";
   document.querySelector("#fieldset-minutes").style.display = isMinutes ? "" : "none";
   document.querySelector("#fieldset-design").style.display = isDesign ? "" : "none";
