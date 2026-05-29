@@ -102,7 +102,7 @@ const exampleRequests = {
   "design-direction": "",
   email: "納期延期をクライアントに丁重にお願いするメールを書きたい",
   minutes: "プロジェクトキックオフ会議の議事録を整理したい",
-  brainstorm: "新サービスのネーミングアイデアを出したい",
+  brainstorm: "",
   research: "",
   custom: "",
   illust: "",
