@@ -818,16 +818,21 @@ function updateIllustVisibility(mode) {
 
   // 補足欄のラベルとplaceholderをモードに合わせて変更
   if (!hideRequest) {
-    const requestLegend  = document.querySelector("#requestLabelText");
-    const requestTextarea = document.querySelector("#request");
-    if (isWireframe) {
-      requestLegend.textContent = "作成の背景・ひとこと（任意）";
-      requestTextarea.placeholder = "例：初回クライアント提案用。シンプルに見せたい。";
-    } else if (hasDedicated) {
-      requestLegend.textContent = "補足・その他（任意）";
-      requestTextarea.placeholder = "例：追加で気になる点や希望があれば";
+    const requestLegendEl  = document.querySelector("#requestLegend");
+    const requestLabelText = document.querySelector("#requestLabelText");
+    const requestTextarea  = document.querySelector("#request");
+    if (hasDedicated) {
+      requestLegendEl.textContent = "任意";
+      if (isWireframe) {
+        requestLabelText.textContent = "作成の背景・ひとこと";
+        requestTextarea.placeholder = "例：初回クライアント提案用。シンプルに見せたい。";
+      } else {
+        requestLabelText.textContent = "補足・その他";
+        requestTextarea.placeholder = "例：追加で気になる点や希望があれば";
+      }
     } else {
-      requestLegend.textContent = "依頼内容";
+      requestLegendEl.textContent = "";
+      requestLabelText.textContent = "依頼内容";
       requestTextarea.placeholder = "ここに相談内容・タスクの詳細を入力してください";
     }
   }
