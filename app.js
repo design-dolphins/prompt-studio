@@ -437,7 +437,9 @@ function buildWireframePrompt(state) {
     opt("目的", state.wfPagePurpose),
   ].filter(Boolean);
 
-  const wfSectionsVal = (state.wfSections || "").trim();
+  const wfSectionsRaw = (state.wfSections || "").trim();
+  const knownWfExamples = Object.values(wfSectionsExamples).filter(v => v !== "");
+  const wfSectionsVal = knownWfExamples.includes(wfSectionsRaw) ? "" : wfSectionsRaw;
   const sectionsText = wfSectionsVal
     ? `【セクション構成】\n${wfSectionsVal}`
     : "セクション構成はサイトの目的・業種・ターゲットを考慮してAIが最適な構成を提案してください。";
