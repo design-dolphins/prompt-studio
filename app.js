@@ -52,7 +52,6 @@ const fields = {
   minType: document.querySelector("#minType"),
   minWish: document.querySelector("#minWish"),
   minContent: document.querySelector("#minContent"),
-  minAttendees: document.querySelector("#minAttendees"),
   customRole: document.querySelector("#customRole"),
   customConditions: document.querySelector("#customConditions"),
   customTask: document.querySelector("#customTask"),
@@ -473,7 +472,6 @@ function buildMinutesPrompt(state) {
   const metaLines = [
     `- 会議の種類：${state.minType || "定例会"}`,
     opt("どう出してほしいか", state.minWish),
-    opt("参加者", state.minAttendees),
     opt("補足", state.request),
   ].filter(Boolean);
 
