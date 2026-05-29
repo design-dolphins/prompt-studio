@@ -56,7 +56,6 @@ const fields = {
   minAttendees: document.querySelector("#minAttendees"),
   customRole: document.querySelector("#customRole"),
   customConditions: document.querySelector("#customConditions"),
-  customTask: document.querySelector("#customTask"),
   bsIssue: document.querySelector("#bsIssue"),
   bsTarget: document.querySelector("#bsTarget"),
   bsContext: document.querySelector("#bsContext"),
@@ -414,7 +413,7 @@ const defaults = {
 };
 
 function buildCustomPrompt(state) {
-  const task = (state.customTask || "").trim();
+  const task = (state.request || "").trim();
   const role = (state.customRole || "").trim();
   const conditions = (state.customConditions || "").trim();
 
@@ -780,7 +779,7 @@ function updateIllustVisibility(mode) {
   const isBrainstorm = mode === "brainstorm";
   const isCustom = mode === "custom";
   const hideStandard = isIllust || isWireframe || isProposal || isUiReview || isDesign || isResearch || isMinutes || isBrainstorm || isCustom;
-  document.querySelector("#fieldset-request").style.display = (isIllust || isMinutes || isCustom) ? "none" : "";
+  document.querySelector("#fieldset-request").style.display = (isIllust || isMinutes) ? "none" : "";
   document.querySelector("#fieldset-custom").style.display = isCustom ? "" : "none";
   document.querySelector("#fieldset-brainstorm").style.display = isBrainstorm ? "" : "none";
   document.querySelector("#fieldset-minutes").style.display = isMinutes ? "" : "none";
@@ -811,7 +810,8 @@ function updateIllustVisibility(mode) {
     requestLegend.textContent = "補足・その他（任意）";
     requestTextarea.placeholder = "例：制作チームに外注予定、A/B案もほしい";
   } else if (isCustom) {
-    // fieldset-request非表示のため設定不要
+    requestLegend.textContent = "やりたいこと";
+    requestTextarea.placeholder = "例：新サービスのLPコピーを考えてほしい、議事録を英語に翻訳してほしい";
   } else if (isBrainstorm) {
     requestLegend.textContent = "補足・その他（任意）";
     requestTextarea.placeholder = "例：箇条書き強化版で出してほしい、Slack共有用に短くしたい";
