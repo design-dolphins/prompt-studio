@@ -69,31 +69,17 @@
               <legend>メール・依頼文設定</legend>
 
               <label>
-                メールの目的
-                <select id="emailPurpose" name="emailPurpose">
-                  <option value="進捗報告">進捗報告</option>
-                  <option value="修正・確認依頼">修正・確認依頼</option>
-                  <option value="納品案内">納品案内</option>
-                  <option value="日程調整">日程調整</option>
-                  <option value="外注・パートナー依頼">外注・パートナー依頼</option>
-                  <option value="フィードバック依頼">フィードバック依頼</option>
-                  <option value="見積もり・提案送付">見積もり・提案送付</option>
-                  <option value="その他">その他</option>
-                </select>
-              </label>
-
-              <label>
                 相手・関係性
-                <input id="emailRecipient" name="emailRecipient" type="text" placeholder="例：継続クライアントの山田様、初回発注の印刷会社" />
+                <input id="emailRecipient" name="emailRecipient" type="text" placeholder="例：継続クライアントの山田様、初回コンタクトの企業担当者" />
               </label>
 
               <label>
-                伝えたいこと
-                <textarea id="emailContent" name="emailContent" rows="5" placeholder="例：第2回デザイン修正が完了しました。確認いただき、フィードバックをお願いしたいです。期限は今週金曜日です。"></textarea>
+                メールの目的・状況
+                <textarea id="emailContent" name="emailContent" rows="5" placeholder="例：デザイン費の値上げをお願いしたい。長期取引があるが言い出しにくい。来月から適用したい。"></textarea>
               </label>
 
               <label>
-                トーン
+                文体トーン
                 <select id="emailTone" name="emailTone">
                   <option value="丁寧・フォーマル">丁寧・フォーマル</option>
                   <option value="柔らかめ・親しみやすい">柔らかめ・親しみやすい</option>
