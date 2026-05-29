@@ -34,10 +34,7 @@ const fields = {
   propGoal: document.querySelector("#propGoal"),
   propTarget: document.querySelector("#propTarget"),
   propSolution: document.querySelector("#propSolution"),
-  propDiff: document.querySelector("#propDiff"),
-  propKpi: document.querySelector("#propKpi"),
-  propSchedule: document.querySelector("#propSchedule"),
-  propTeam: document.querySelector("#propTeam"),
+  propExtra: document.querySelector("#propExtra"),
   uiPerspective: document.querySelector("#uiPerspective"),
   uiPageType: document.querySelector("#uiPageType"),
   uiTarget: document.querySelector("#uiTarget"),
@@ -48,6 +45,7 @@ const fields = {
   designTone: document.querySelector("#designTone"),
   designRef: document.querySelector("#designRef"),
   designNg: document.querySelector("#designNg"),
+
   researchTheme: document.querySelector("#researchTheme"),
   researchPurpose: document.querySelector("#researchPurpose"),
   researchTargets: document.querySelector("#researchTargets"),
@@ -634,10 +632,7 @@ function buildProposalPrompt(state) {
     opt("Webサイトの目的", state.propGoal),
     opt("ターゲット", state.propTarget),
     opt("提案する施策", state.propSolution),
-    opt("競合との差別化ポイント", state.propDiff),
-    opt("想定KPI", state.propKpi),
-    opt("制作スケジュール", state.propSchedule),
-    opt("制作体制", state.propTeam),
+    opt("その他・補足", state.propExtra),
   ].filter(Boolean);
 
   const inputSection = inputLines.length > 0
@@ -814,13 +809,10 @@ function updateIllustVisibility(mode) {
   } else if (isDesign) {
     requestLegend.textContent = "補足・その他（任意）";
     requestTextarea.placeholder = "例：制作チームに外注予定、A/B案もほしい";
-  } else if (isBrainstorm) {
-    requestLegend.textContent = "補足・その他（任意）";
-    requestTextarea.placeholder = "例：競合との差別化視点も含めてほしい";
   } else if (isCustom) {
     requestLegend.textContent = "やりたいこと";
     requestTextarea.placeholder = "例：新サービスのLPコピーを考えてほしい、議事録を英語に翻訳してほしい";
-  } else if (isMinutes) {
+  } else if (isBrainstorm) {
     requestLegend.textContent = "補足・その他（任意）";
     requestTextarea.placeholder = "例：箇条書き強化版で出してほしい、Slack共有用に短くしたい";
   } else if (isResearch) {
