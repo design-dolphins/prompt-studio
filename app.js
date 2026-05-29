@@ -803,6 +803,8 @@ function updateIllustVisibility(mode) {
   // 補足欄: illust/minutes/customは非表示、他の専用モードは表示（下部に）
   const hideRequest = isIllust || isMinutes || isCustom;
   document.querySelector("#fieldset-request").style.display = hideRequest ? "none" : "";
+  document.querySelector("#wfSectionsGroup").style.display = isWireframe ? "" : "none";
+  document.querySelector("#wfNotesGroup").style.display = isWireframe ? "" : "none";
 
   // 補足欄のラベルとplaceholderをモードに合わせて変更
   if (!hideRequest) {

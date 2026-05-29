@@ -302,17 +302,6 @@
                 目的
                 <input id="wfPagePurpose" name="wfPagePurpose" type="text" placeholder="例：新規法人顧客への問い合わせ獲得" />
               </label>
-
-              <label>
-                セクション構成（任意）
-                <textarea id="wfSections" name="wfSections" rows="7"></textarea>
-                <small class="field-hint">空欄にするとAIが提案します。</small>
-              </label>
-
-              <label>
-                補足（任意）
-                <textarea id="wfNotes" name="wfNotes" rows="2" placeholder="例：電話番号、CTAコピー、強調したいポイントなど"></textarea>
-              </label>
             </fieldset>
 
             <fieldset id="fieldset-illust" style="display:none">
@@ -373,10 +362,23 @@
 
 
             <fieldset id="fieldset-request" style="display:none">
+              <div id="wfSectionsGroup" style="display:none">
+                <label>
+                  セクション構成（任意）
+                  <textarea id="wfSections" name="wfSections" rows="7"></textarea>
+                  <small class="field-hint">空欄にするとAIが提案します。</small>
+                </label>
+              </div>
               <legend id="requestLegend">依頼内容</legend>
               <label id="requestLabel">
                 <textarea id="request" name="request" rows="4" placeholder=""></textarea>
               </label>
+              <div id="wfNotesGroup" style="display:none">
+                <label>
+                  補足（任意）
+                  <textarea id="wfNotes" name="wfNotes" rows="2" placeholder="例：電話番号、CTAコピー、強調したいポイントなど"></textarea>
+                </label>
+              </div>
             </fieldset>
 
             <fieldset id="fieldset-extras">
