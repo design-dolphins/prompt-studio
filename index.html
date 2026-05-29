@@ -82,6 +82,77 @@
               </label>
             </fieldset>
 
+            <fieldset id="fieldset-brainstorm" style="display:none">
+              <legend>アイデア出し設定</legend>
+
+              <label>
+                解決したい課題
+                <textarea id="bsIssue" name="bsIssue" rows="4" placeholder="例：新規顧客が増えない、採用応募が少ない、既存顧客の離脱が多い"></textarea>
+              </label>
+
+              <label>
+                対象
+                <input id="bsTarget" name="bsTarget" type="text" placeholder="例：新規顧客、社内メンバー、既存ユーザー、経営層" />
+              </label>
+
+              <label>
+                業界・商材・事業フェーズ
+                <input id="bsContext" name="bsContext" type="text" placeholder="例：BtoB SaaS・スタートアップ、人材サービス・拡大期" />
+              </label>
+
+              <label>
+                施策の目的
+                <input id="bsGoal" name="bsGoal" type="text" placeholder="例：売上UP、認知拡大、CV向上、採用強化、UI改善" />
+              </label>
+
+              <label>
+                施策のトーン
+                <select id="bsTone" name="bsTone">
+                  <option value="バランス重視">バランス重視</option>
+                  <option value="攻め・革新的">攻め・革新的</option>
+                  <option value="守り・保守的">守り・保守的</option>
+                  <option value="低コスト優先">低コスト優先</option>
+                  <option value="スピード優先">スピード優先</option>
+                </select>
+              </label>
+
+              <label>
+                参考情報・素材（任意）
+                <textarea id="bsMaterials" name="bsMaterials" rows="3" placeholder="例：既存施策一覧、競合情報、ターゲット情報、予算感、USP"></textarea>
+              </label>
+            </fieldset>
+
+            <fieldset id="fieldset-minutes" style="display:none">
+              <legend>議事録・要約設定</legend>
+
+              <label>
+                会議の種類
+                <select id="minType" name="minType">
+                  <option value="定例会">定例会</option>
+                  <option value="提案MTG">提案MTG</option>
+                  <option value="要件定義">要件定義</option>
+                  <option value="デザインレビュー">デザインレビュー</option>
+                  <option value="キックオフ">キックオフ</option>
+                  <option value="その他">その他</option>
+                </select>
+              </label>
+
+              <label>
+                議事メモ・文字起こし
+                <textarea id="minContent" name="minContent" rows="8" placeholder="ここに議事メモ、文字起こし、Slackログなどを貼り付けてください"></textarea>
+              </label>
+
+              <label>
+                参加者（任意）
+                <input id="minAttendees" name="minAttendees" type="text" placeholder="例：山田（PM）、田中（デザイナー）、クライアント鈴木様" />
+              </label>
+
+              <label>
+                特に強調したいこと（任意）
+                <input id="minHighlight" name="minHighlight" type="text" placeholder="例：決定事項を目立たせたい、次回アクションを明確に" />
+              </label>
+            </fieldset>
+
             <fieldset id="fieldset-research" style="display:none">
               <legend>リサーチ・競合分析設定</legend>
 

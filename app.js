@@ -50,6 +50,16 @@ const fields = {
   researchPurpose: document.querySelector("#researchPurpose"),
   researchTargets: document.querySelector("#researchTargets"),
   researchFocus: document.querySelector("#researchFocus"),
+  minType: document.querySelector("#minType"),
+  minContent: document.querySelector("#minContent"),
+  minAttendees: document.querySelector("#minAttendees"),
+  minHighlight: document.querySelector("#minHighlight"),
+  bsIssue: document.querySelector("#bsIssue"),
+  bsTarget: document.querySelector("#bsTarget"),
+  bsContext: document.querySelector("#bsContext"),
+  bsGoal: document.querySelector("#bsGoal"),
+  bsTone: document.querySelector("#bsTone"),
+  bsMaterials: document.querySelector("#bsMaterials"),
 };
 
 const modeLabels = {
@@ -400,6 +410,87 @@ const defaults = {
   includeSummary: true,
 };
 
+function buildBrainstormPrompt(state) {
+  const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
+
+  const bgLines = [
+    opt("解決したい課題", state.bsIssue),
+    opt("対象", state.bsTarget),
+    opt("業界・商材・事業フェーズ", state.bsContext),
+    opt("施策の目的", state.bsGoal),
+    `- 施策のトーン：${state.bsTone || "バランス重視"}`,
+  ].filter(Boolean);
+
+  return [
+    "あなたは「戦略プランナー兼アイデアクリエイターAI」です。",
+    "ユーザーが提示したテーマに対して、目的達成のための最適な施策・アイデアを多角的に提案し、実行可能性や期待効果も含めて構造化して提示してください。",
+    "",
+    "# 【背景】",
+    ...bgLines,
+    "",
+    (state.bsMaterials || "").trim()
+      ? `# 【参考情報・素材】\n${state.bsMaterials.trim()}`
+      : "# 【参考情報・素材】\n記載がない場合は一般的な想定で補完してください。",
+    (state.request || "").trim() ? `\n# 【補足】\n${state.request.trim()}` : null,
+    "",
+    "# 【制約条件】",
+    "- 実現可能性の低すぎる施策は除外する",
+    "- KPI軸・顧客体験軸・事業戦略軸で施策を整理する",
+    "- 必ず3〜5案を提示する",
+    "- 施策単体ではなく施策群としての流れも提示する",
+    "- 時間軸・予算・リソースに触れる",
+    "",
+    "# 【出力形式】",
+    "- 施策案：3〜5案",
+    "- 各施策の構造化（目的 → 施策概要 → 実施ステップ → 期待効果 → KPI）",
+    "- 戦略上の優先順位",
+    "- 追加の深掘りポイント",
+    "",
+    "以上の内容を確認しました。それでは今すぐ提案を開始してください。",
+  ].filter(Boolean).join("\n");
+}
+
+function buildMinutesPrompt(state) {
+  const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
+  const content = (state.minContent || "").trim();
+
+  const metaLines = [
+    `- 会議の種類：${state.minType || "定例会"}`,
+    opt("参加者", state.minAttendees),
+    opt("特に強調したいこと", state.minHighlight),
+    opt("補足", state.request),
+  ].filter(Boolean);
+
+  return [
+    "あなたは「ビジネスコミュニケーション編集AI」です。",
+    "以下の議事メモ・文字起こしをもとに、クライアントへそのまま共有できる議事録へ整理してください。",
+    "",
+    "# 【会議情報】",
+    ...metaLines,
+    "",
+    "# 【元データ】",
+    content || "（メモ・文字起こしがここに入ります）",
+    "",
+    "# 【制約条件】",
+    "- ラフな会話表現はビジネス文体へ整える",
+    "- 決定事項と未決事項を分離する",
+    "- ToDo・担当・期限を可能な限り整理する",
+    "- 攻撃的・曖昧・責任転嫁に見える表現を避ける",
+    "- クライアントにそのまま送れる品質にする",
+    "",
+    "# 【出力形式】",
+    "1. 会議概要（日時・参加者・目的）",
+    "2. 議題ごとの内容要約",
+    "3. 決定事項",
+    "4. 未決事項・確認事項",
+    "5. ToDo一覧（タスク／担当／期限）",
+    "6. 次回予定（あれば）",
+    "7. クライアント送付用メール文面（件名＋本文）",
+    "",
+    "以上の内容を確認しました。それでは今すぐ作業を開始してください。",
+  ].join("\n");
+}
+
 function buildDesignPrompt(state) {
   const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
   const infoLines = [
@@ -664,7 +755,11 @@ function updateIllustVisibility(mode) {
   const isUiReview = mode === "ui-review";
   const isDesign = mode === "design-direction";
   const isResearch = mode === "research";
-  const hideStandard = isIllust || isWireframe || isProposal || isUiReview || isDesign || isResearch;
+  const isMinutes = mode === "minutes";
+  const isBrainstorm = mode === "brainstorm";
+  const hideStandard = isIllust || isWireframe || isProposal || isUiReview || isDesign || isResearch || isMinutes || isBrainstorm;
+  document.querySelector("#fieldset-brainstorm").style.display = isBrainstorm ? "" : "none";
+  document.querySelector("#fieldset-minutes").style.display = isMinutes ? "" : "none";
   document.querySelector("#fieldset-design").style.display = isDesign ? "" : "none";
   document.querySelector("#fieldset-research").style.display = isResearch ? "" : "none";
   document.querySelector("#fieldset-uireview").style.display = isUiReview ? "" : "none";
@@ -691,6 +786,12 @@ function updateIllustVisibility(mode) {
   } else if (isDesign) {
     requestLegend.textContent = "補足・その他（任意）";
     requestTextarea.placeholder = "例：制作チームに外注予定、A/B案もほしい";
+  } else if (isBrainstorm) {
+    requestLegend.textContent = "補足・その他（任意）";
+    requestTextarea.placeholder = "例：競合との差別化視点も含めてほしい";
+  } else if (isMinutes) {
+    requestLegend.textContent = "補足・その他（任意）";
+    requestTextarea.placeholder = "例：箇条書き強化版で出してほしい、Slack共有用に短くしたい";
   } else if (isResearch) {
     requestLegend.textContent = "補足・その他（任意）";
     requestTextarea.placeholder = "例：経営会議向けにまとめたい、SEO観点も含めてほしい";
@@ -778,6 +879,8 @@ function buildPrompt(state) {
   if (state.mode === "ui-review") return buildUiReviewPrompt(state);
   if (state.mode === "design-direction") return buildDesignPrompt(state);
   if (state.mode === "research") return buildResearchPrompt(state);
+  if (state.mode === "minutes") return buildMinutesPrompt(state);
+  if (state.mode === "brainstorm") return buildBrainstormPrompt(state);
 
   const mode = modeLabels[state.mode];
   const role = roleMap[state.mode];
