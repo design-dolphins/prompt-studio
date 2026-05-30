@@ -386,6 +386,14 @@ textarea:focus {
   }
 }
 
+#uiOptionalGroup,
+#designOptionalGroup,
+#researchOptionalGroup,
+#brainstormOptionalGroup {
+  display: grid;
+  gap: 14px;
+}
+
 .site-footer {
   margin-top: 48px;
   border-top: 1px solid var(--line);
