@@ -2024,8 +2024,8 @@ function buildResearchPrompt(state) {
     (state.researchPurpose && state.researchPurpose !== "おまかせ")
       ? `- 調査目的：${state.researchPurpose}`
       : "- 調査目的：全角度から包括的に分析してください",
-    opt("企業名・URL（自社/クライアント）", state.researchOwnUrl),
-    opt("比較したい企業・URL", state.researchTargets),
+    opt("調査対象の企業", state.researchOwnUrl),
+    opt("比較対象の企業", state.researchTargets),
     opt("特に見たい観点", state.researchFocus),
     opt("補足", state.request),
   ].filter(Boolean);
