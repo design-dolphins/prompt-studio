@@ -2020,7 +2020,9 @@ function buildResearchPrompt(state) {
   const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
   const infoLines = [
     opt("調査テーマ", state.researchTheme),
-    `- 調査目的：${state.researchPurpose || "競合サイトの比較"}`,
+    (state.researchPurpose && state.researchPurpose !== "おまかせ")
+      ? `- 調査目的：${state.researchPurpose}`
+      : "- 調査目的：全角度から包括的に分析してください",
     opt("対象企業・URL", state.researchTargets),
     opt("特に見たい観点", state.researchFocus),
     opt("補足", state.request),
