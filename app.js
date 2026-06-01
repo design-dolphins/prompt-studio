@@ -917,6 +917,7 @@ function buildIllustPrompt(state) {
     const colorTone = colorToneMap[state.illustColorTone] || colorToneMap.soft;
     const category = categoryMap[state.illustCategory] || categoryMap.mix;
     const objects = (state.illustObjects || "").trim();
+    const isPeople = state.illustCategory === "people";
 
     return [
       `${theme}に関連するアイソメトリックイラストの素材集を6〜8個作成してください。`,
@@ -926,6 +927,9 @@ function buildIllustPrompt(state) {
       "Japanese business illustration style / Pure isometric projection / Very flat appearance",
       "No outlines / No shadows / No gradients / No textures / No lighting effects / No realistic details",
       "面の色の塗り分けで立体感を表現（上面はやや明るく、側面は5〜10%暗め）",
+      isPeople ? "Slim and elongated body proportions — taller figure, smaller head ratio" : null,
+      isPeople ? "Soft and gentle curves on body outlines — avoid blocky or overly geometric shapes" : null,
+      isPeople ? "Natural, relaxed posture" : null,
       "シンプルなジオメトリック形状、最小限の視覚情報",
       "Clean vector artwork / Friendly and approachable / Corporate infographic style",
       "",
