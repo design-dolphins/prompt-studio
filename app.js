@@ -406,6 +406,8 @@ const defaults = {
   customBackground: "",
   customOutput: "",
   customConditions: "",
+  illustStyle: "flat",
+  illustColorTone: "soft",
 };
 
 function buildWireframePrompt(state) {
@@ -1117,6 +1119,14 @@ function updateFramingVisibility(figureValue) {
   document.querySelector("#figureCountRow").style.display = hidden ? "none" : "";
 }
 
+function updateIllustStylePanels(styleValue) {
+  const val = styleValue || "flat";
+  document.querySelector("#illustColorToneRow").style.display = val === "icon" ? "none" : "";
+  document.querySelector("#illustFlatFields").style.display   = val === "flat"      ? "" : "none";
+  document.querySelector("#illustIsoFields").style.display    = val === "isometric" ? "" : "none";
+  document.querySelector("#illustIconFields").style.display   = val === "icon"      ? "" : "none";
+}
+
 function renderOptions(mode) {
   const config = templateConfigs[mode] || templateConfigs.custom;
   const container = document.querySelector("#optionsContainer");
@@ -1328,7 +1338,10 @@ function buildPrompt(state) {
 function updatePrompt() {
   const state = getState();
   updateIllustVisibility(state.mode);
-  if (state.mode === "illust") updateFramingVisibility(state.illustFigure);
+  if (state.mode === "illust") {
+    updateFramingVisibility(state.illustFigure);
+    updateIllustStylePanels(state.illustStyle);
+  }
   output.value = buildPrompt(state);
   modeHint.textContent = modeHints[state.mode] || "";
   document.querySelector("#previewMode").textContent = modeLabels[state.mode];
@@ -1402,11 +1415,7 @@ document.querySelector("#shareBtn").addEventListener("click", shareLink);
 document.querySelector("#resetBtn").addEventListener("click", resetForm);
 fields.illustFigure.addEventListener("change", () => updateFramingVisibility(fields.illustFigure.value));
 fields.illustStyle.addEventListener("change", () => {
-  const val = fields.illustStyle.value;
-  document.querySelector("#illustColorToneRow").style.display = val === "icon" ? "none" : "";
-  document.querySelector("#illustFlatFields").style.display   = val === "flat"      ? "" : "none";
-  document.querySelector("#illustIsoFields").style.display    = val === "isometric" ? "" : "none";
-  document.querySelector("#illustIconFields").style.display   = val === "icon"      ? "" : "none";
+  updateIllustStylePanels(fields.illustStyle.value);
   updatePrompt();
 });
 fields.wfPageType.addEventListener("change", () => updateWfSectionsPlaceholder(fields.wfPageType.value));
