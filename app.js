@@ -935,30 +935,32 @@ function buildIllustPrompt(state) {
     };
     const directionText = directionMap[state.illustDirection] || null;
 
+    const contentText = objects
+      ? `内容：\n${objects}`
+      : `内容：\n${theme}に関連する人物キャラクターを10〜12点、それぞれ異なるシーン・ポーズ・役割でAIが考えて構成してください（スタッフ、客、作業中の人など、テーマに合わせて）。`;
+
     return [
-      `${theme}に関連するアイソメトリックイラストの素材集を6〜8個作成してください。`,
-      `カテゴリ：${category}`,
+      `${theme}のキャラクターアセットコレクション。純白の背景に、10〜12点のアイソメトリックイラストをすっきりとしたグリッドレイアウトで配置。間隔は均等で、スケールは統一されており、各オブジェクトは切り抜き済みで、重なりはありません。`,
       "",
-      "スタイル：",
-      "Japanese business illustration style / Pure isometric projection / Very flat appearance",
-      "No outlines / No shadows / No gradients / No textures / No lighting effects / No realistic details",
-      "面の色の塗り分けで立体感を表現（上面はやや明るく、側面は5〜10%暗め）",
-      isPeople ? "Slim and elongated body proportions — taller figure, smaller head ratio" : null,
-      isPeople ? "Soft and gentle curves on body outlines — avoid blocky or overly geometric shapes" : null,
-      isPeople ? "Natural, relaxed posture" : null,
+      contentText,
+      "",
+      "日本のストックイラストの美学、日本のビジネスイラストスタイル、純粋なアイソメトリック投影、フラットなアイソメトリックベクターイラスト、企業向けインフォグラフィックスタイル。",
+      "",
+      "背が高くスリムな日本のビジネスキャラクター。身長は頭部6.5〜7個分程度。胴体に比べて脚が長く、肩幅は狭く、腕と脚は細身。軽やかなシルエット、都会的でエレガントなプロフェッショナルのプロポーション、柔らかな曲線を描く体の輪郭、リラックスした自然な姿勢、優雅な歩行ポーズ。",
+      "",
+      "顔のないキャラクター。目、口、その他の顔の特徴はなく、髪は単純な実線形状のみで表現。",
+      "",
+      "極めて簡略化された幾何学形状、最小限のディテール、大きなフラットな色面、ミニマルなデザイン、クリーンなベクターアートワーク、簡略化された服装・アクセサリー、親しみやすくプロフェッショナルな外観。",
+      "",
+      `${colorTone} / 各キャラクターは2〜3色に限定。セット全体を通して一貫した色使い。`,
       directionText,
-      "シンプルなジオメトリック形状、最小限の視覚情報",
-      "Clean vector artwork / Friendly and approachable / Corporate infographic style",
       "",
-      `カラー：${colorTone} / 1素材につき2〜3色以内`,
+      "純粋なフラットな外観。輪郭線、影、グラデーション、テクスチャ、照明効果、反射、リアルなレンダリングは一切なし。",
+      "色の分離によってのみ表現される、非常に控えめなアイソメトリックな立体感。上面はわずかに明るく、側面は5〜10％暗くする。",
       "",
-      "レイアウト：",
-      "各オブジェクトを独立して配置、重ならないようにグリッド状に整列",
-      "白い背景、統一されたスケール",
-      objects ? `\n含めるオブジェクト：${objects}` : "",
+      "日本のストックアセットパック、商用イラストライブラリスタイル、PIXTAスタイル、AC-illustスタイル、ビジネスプレゼンテーション用イラスト。",
       "",
-      "Japanese stock illustration aesthetic / Flat isometric vector illustration",
-      "Extremely simplified geometry / Large color blocks / Minimalist",
+      "ネガティブプロンプト：\nフォトリアリスティック、リアルな顔、アニメ、マンガ、詳細な目、詳細な手、太い輪郭線、黒のストローク、影、グラデーションの陰影、テクスチャ、光沢のある素材、3Dレンダリング、ドラマチックな照明、透視図法、リアルな解剖学、筋肉質な体、短い脚、コンパクトな体、ちびキャラ、スーパーデフォルメ、かわいいマスコット、混雑した構図、詳細な背景、装飾要素、過剰なディテール",
     ].filter(v => v !== null).join("\n");
   }
 
