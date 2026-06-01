@@ -907,73 +907,85 @@ function buildIllustPrompt(state) {
 
   // アイソメトリック
   if (state.illustStyle === "isometric") {
-    const colorToneMap = {
+    const colorTonePeople = {
       soft:  "Bright clean palette. Bright white clothing. Soft and light accent colors. Each character limited to 2–3 colors. Consistent color palette across the entire collection.",
       muted: "Calm muted palette. Bright white clothing. Muted and desaturated accent colors. Each character limited to 2–3 colors. Consistent color palette across the entire collection.",
       vivid: "Bright clean palette. Bright white clothing. Fresh accent colors. Bold and vivid accent colors. Each character limited to 2–3 colors. Consistent color palette across the entire collection.",
     };
-    const colorTone = colorToneMap[state.illustColorTone] || colorToneMap.soft;
+    const colorToneObject = {
+      soft:  "Bright clean palette. Soft and light colors. Each object limited to 2–3 colors. Consistent color palette across the entire collection.",
+      muted: "Calm muted palette. Desaturated and quiet tones. Each object limited to 2–3 colors. Consistent color palette across the entire collection.",
+      vivid: "Bright clean palette. Bold and vivid accent colors. Each object limited to 2–3 colors. Consistent color palette across the entire collection.",
+    };
+
     const objects = (state.illustObjects || "").trim();
+    const isPeople = state.illustCategory === "people" || state.illustCategory === "mix" || !state.illustCategory;
+
+    const categoryContentMap = {
+      building: `${theme}に関連する建物・ランドマーク・施設を8点、それぞれ異なる種類・用途でAIが考えて構成する。`,
+      item:     `${theme}に関連する小物・アイテム・道具を8点、それぞれ異なる種類でAIが考えて構成する。`,
+      vehicle:  `${theme}に関連する乗り物・交通手段を8点、それぞれ異なる種類でAIが考えて構成する。`,
+      nature:   `${theme}に関連する自然・植物・動物を8点、それぞれ異なる種類でAIが考えて構成する。`,
+      people:   `${theme}に関連するスタッフ、店員、客、作業スタッフなどをテーマに、異なる役割・ポーズ・シーンの人物8点を構成する。`,
+      mix:      `${theme}に関連する人物・建物・小物・乗り物などを幅広くミックスして8点を構成する。`,
+    };
 
     const directionMap = {
-      left:       "All figures facing left-forward direction.",
-      right:      "All figures facing right-forward direction.",
-      "back-left":  "All figures facing away from the viewer, turned toward the left.",
-      "back-right": "All figures facing away from the viewer, turned toward the right.",
+      left:       "All objects / figures facing left-forward direction.",
+      right:      "All objects / figures facing right-forward direction.",
+      "back-left":  "All objects / figures facing away from the viewer, turned toward the left.",
+      "back-right": "All objects / figures facing away from the viewer, turned toward the right.",
       mix:        null,
     };
     const directionText = directionMap[state.illustDirection] || null;
-
-    const contentText = objects
-      ? `${objects}`
-      : `${theme}に関連するスタッフ、店員、客、作業スタッフなどをテーマに、異なる役割・ポーズ・シーンの人物8点を構成する。`;
+    const contentText = objects || categoryContentMap[state.illustCategory] || categoryContentMap.people;
+    const colorTone = isPeople
+      ? (colorTonePeople[state.illustColorTone] || colorTonePeople.soft)
+      : (colorToneObject[state.illustColorTone] || colorToneObject.soft);
+    const collectionLabel = isPeople ? "人物キャラクター" : "素材";
 
     return [
-      `${theme}の人物キャラクターアセットコレクション。純白の背景。8点の人物素材を均等なグリッドレイアウトで配置。各オブジェクトは独立して配置され、重なりなし、統一スケール、十分な余白。`,
+      `${theme}の${collectionLabel}アセットコレクション。純白の背景。8点の素材を均等なグリッドレイアウトで配置。各オブジェクトは独立して配置され、重なりなし、統一スケール、十分な余白。`,
       contentText,
       "",
       "Japanese stock illustration aesthetic.",
-      "Flat vector people asset collection.",
+      isPeople ? "Flat vector people asset collection." : "Flat vector object asset collection.",
       "Pseudo-isometric view.",
       "Almost two-dimensional appearance.",
       "Minimal isometric hint.",
       "Extremely weak three-dimensionality.",
-      "Extremely simplified human figures.",
+      isPeople ? "Extremely simplified human figures." : "Extremely simplified objects.",
       "Large flat color areas.",
       "Large uninterrupted color blocks.",
       "Paper-cut style vector shapes.",
-      "Characters appear as simple graphic symbols.",
       "Minimal contour variation.",
       "Minimal visual information.",
-      "Minimal body articulation.",
-      "Minimal anatomical definition.",
       "Geometric simplification.",
       "Clean vector shapes.",
       "Soft controlled curves.",
       "Smooth rounded silhouettes.",
-      "Face without eyes, mouth, nose, eyebrows or facial details.",
-      "Hair represented as a single simple shape.",
-      "Hair colors limited to warm brown, chestnut brown, medium brown and light brown.",
-      "Tall and slim proportions.",
-      "Long legs relative to torso.",
-      "Lightweight silhouette.",
-      "Simplified hands and feet.",
-      "Simplified clothing.",
-      "No clothing folds.",
-      "No wrinkles.",
-      "No seams.",
-      "No fabric texture.",
+      isPeople ? "Face without eyes, mouth, nose, eyebrows or facial details." : null,
+      isPeople ? "Hair represented as a single simple shape." : null,
+      isPeople ? "Hair colors limited to warm brown, chestnut brown, medium brown and light brown." : null,
+      isPeople ? "Tall and slim proportions." : null,
+      isPeople ? "Long legs relative to torso." : null,
+      isPeople ? "Lightweight silhouette." : null,
+      isPeople ? "Simplified hands and feet." : null,
+      isPeople ? "Simplified clothing." : null,
+      isPeople ? "No clothing folds." : null,
+      isPeople ? "No wrinkles." : null,
+      isPeople ? "No seams." : null,
+      isPeople ? "No fabric texture." : null,
       "No decorative details.",
       colorTone,
       directionText,
-      "Characters are isolated assets.",
-      "Characters are the primary subject.",
+      isPeople ? "Characters are isolated assets." : "Objects are isolated assets.",
+      isPeople ? "Characters are the primary subject." : "Objects are the primary subject.",
       "Props are symbolic only.",
       "Minimal prop detail.",
       "No scene construction.",
       "No environmental storytelling.",
-      "No realistic furniture.",
-      "No realistic equipment.",
+      "No realistic details.",
       "Pure flat appearance.",
       "No outlines.",
       "No strokes.",
@@ -988,7 +1000,7 @@ function buildIllustPrompt(state) {
       "No sculpted forms.",
       "Pure white background.",
       "",
-      "Negative prompt:\nphotorealistic, realistic face, anime, manga, detailed eyes, detailed hands, realistic anatomy, muscular body, chibi, super deformed, mascot character, thick outlines, black stroke, shadows, gradient shading, texture, glossy material, 3D render, clay render, dramatic lighting, perspective view, realistic furniture, realistic equipment, interior scene, environmental storytelling, decorative elements, cluttered composition, excessive details, strong depth, strong three-dimensionality, volumetric shading",
+      "Negative prompt:\nphotorealistic, realistic face, anime, manga, detailed eyes, detailed hands, realistic anatomy, muscular body, chibi, super deformed, mascot character, thick outlines, black stroke, shadows, gradient shading, texture, glossy material, 3D render, clay render, dramatic lighting, perspective view, interior scene, environmental storytelling, decorative elements, cluttered composition, excessive details, strong depth, strong three-dimensionality, volumetric shading",
       "",
       "8K",
     ].filter(v => v !== null).join("\n");
