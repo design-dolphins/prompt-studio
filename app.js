@@ -1398,6 +1398,9 @@ function loadFromUrl() {
 function resetForm() {
   history.replaceState(null, "", location.pathname);
   const currentMode = fields.mode.value;
+  document.querySelectorAll("#promptForm input[type=text], #promptForm input[type=url], #promptForm textarea").forEach(el => {
+    el.value = "";
+  });
   applyState({ ...defaults, mode: currentMode });
   showToast("初期設定に戻しました");
 }
