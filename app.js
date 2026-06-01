@@ -28,6 +28,8 @@ const fields = {
   illustObjects: document.querySelector("#illustObjects"),
   illustColorTone: document.querySelector("#illustColorTone"),
   illustTheme: document.querySelector("#illustTheme"),
+  illustElements: document.querySelector("#illustElements"),
+  illustStyleRef: document.querySelector("#illustStyleRef"),
   wfPageType: document.querySelector("#wfPageType"),
   wfOutputType: document.querySelector("#wfOutputType"),
   wfCompany: document.querySelector("#wfCompany"),
@@ -966,7 +968,7 @@ function buildIllustPrompt(state) {
   };
 
   const bgInstructions = {
-    "solid": `${theme}にインスパイアされたソリッドな背景色`,
+    "solid": `${theme}のテーマカラーを使ったソリッドな背景色`,
     "white": "白（#FFFFFF）の背景",
     "transparent": "透明背景（背景なし）",
   };
@@ -1001,16 +1003,20 @@ function buildIllustPrompt(state) {
   }
 
   return [
-    `${theme}にインスパイアされた、洗練されたフラットベクターの編集パターンイラストを作成してください。`,
+    `${theme}をテーマにした、洗練されたフラットベクターの編集パターンイラストを作成してください。`,
     `テーマに関連する象徴的なオブジェクトやシーンを組み合わせたシームレスなアートコラージュとして構成します。`,
     "",
-    `スカンジナビア編集グラフィックス、ミッドセンチュリーテキスタイルパターン、現代のミュージアムショップイラストにインスパイアされています。`,
+    (state.illustStyleRef || "").trim()
+      ? `${(state.illustStyleRef).trim()}の様式で構成します。`
+      : `スカンジナビア編集グラフィックス、ミッドセンチュリーテキスタイルパターン、現代のミュージアムショップイラストの様式で構成します。`,
     "",
     `スタイル：`,
     `超クリーンなフラットベクターシェイプ / 大胆に簡略化されたシルエット / 遊び心のあるジオメトリック構成 / 強いネガティブスペース / シャープな編集ミニマリズム / スクリーンプリント風のカラーブロッキング / 高コントラストのグラフィックデザイン / ダイナミックな非対称配置 / アウトラインなし / グラデーションなし / フォトリアリズムなし / クリーンなマットな外観 / ファッショナブルなコンテンポラリーポスターエステティック`,
     "",
     `構成：`,
-    `${theme}の4〜5つの象徴的な要素を、認識可能な抽象シルエットに強く簡略化して含めます。関連するオブジェクトやライフスタイル要素とミックスし、プレミアムテキスタイルプリントのようにリズミカルにキャンバス全体へ散りばめます。中央集中型の構成・現実的なパースペクティブを避けます。`,
+    (state.illustElements || "").trim()
+      ? `${(state.illustElements).trim()}を中心に構成します。関連するオブジェクトやライフスタイル要素とミックスし、プレミアムテキスタイルプリントのようにリズミカルにキャンバス全体へ散りばめます。中央集中型の構成・現実的なパースペクティブを避けます。`
+      : `${theme}の4〜5つの象徴的な要素を、認識可能な抽象シルエットに強く簡略化して含めます。関連するオブジェクトやライフスタイル要素とミックスし、プレミアムテキスタイルプリントのようにリズミカルにキャンバス全体へ散りばめます。中央集中型の構成・現実的なパースペクティブを避けます。`,
     figureText,
     "",
     `カラーシステム：`,
