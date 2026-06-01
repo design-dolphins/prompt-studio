@@ -1397,7 +1397,8 @@ function loadFromUrl() {
 
 function resetForm() {
   history.replaceState(null, "", location.pathname);
-  applyState(defaults);
+  const currentMode = fields.mode.value;
+  applyState({ ...defaults, mode: currentMode });
   showToast("初期設定に戻しました");
 }
 
