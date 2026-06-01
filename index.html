@@ -321,18 +321,17 @@
                 <input id="illustTheme" name="illustTheme" type="text" placeholder="例：Tokyo、コーヒーショップ、病院" />
               </label>
 
+              <label id="illustColorToneRow">
+                カラートーン
+                <select id="illustColorTone" name="illustColorTone">
+                  <option value="soft">ソフト＆明るい</option>
+                  <option value="muted">ミュート＆落ち着き</option>
+                  <option value="vivid">ビビッド</option>
+                </select>
+              </label>
+
               <!-- フラットベクター用フィールド -->
               <div id="illustFlatFields">
-                <label>
-                  カラー数
-                  <select id="illustColors" name="illustColors">
-                    <option value="3">3色</option>
-                    <option value="2">2色</option>
-                    <option value="4">4色</option>
-                    <option value="mono">モノクロ（白黒）</option>
-                  </select>
-                </label>
-
                 <label>
                   背景
                   <select id="illustBg" name="illustBg">
@@ -399,15 +398,6 @@
                 <label>
                   含めたいオブジェクト（任意）
                   <textarea id="illustObjects" name="illustObjects" rows="3" placeholder="例：Tokyo Tower、鳥居、路面電車、桜の木"></textarea>
-                </label>
-
-                <label>
-                  カラートーン
-                  <select id="illustColorTone" name="illustColorTone">
-                    <option value="soft">ソフト＆明るい</option>
-                    <option value="muted">ミュート＆落ち着き</option>
-                    <option value="vivid">ビビッド</option>
-                  </select>
                 </label>
               </div>
 

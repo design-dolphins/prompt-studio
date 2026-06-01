@@ -21,7 +21,6 @@ const fields = {
   illustDirection: document.querySelector("#illustDirection"),
   illustIconSize: document.querySelector("#illustIconSize"),
   illustIconStroke: document.querySelector("#illustIconStroke"),
-  illustColors: document.querySelector("#illustColors"),
   illustBg: document.querySelector("#illustBg"),
   illustFigure: document.querySelector("#illustFigure"),
   illustFigureCount: document.querySelector("#illustFigureCount"),
@@ -957,12 +956,11 @@ function buildIllustPrompt(state) {
     ].filter(v => v !== null).join("\n");
   }
 
-  // フラットベクター（既存）
-  const colorInstructions = {
-    "2": "高度にコントロールされた2色のみを使用",
-    "3": "高度にコントロールされた3色のみを使用",
-    "4": "高度にコントロールされた4色のみを使用",
-    "mono": "ブラック・ホワイト・グレーのモノクロのみを使用",
+  // フラットベクター
+  const colorToneFlat = {
+    soft:  "やわらかく明るいトーンで、親しみやすい色合い",
+    muted: "落ち着いたミュートトーンで、洗練された色合い",
+    vivid: "鮮やかでコントラストの強いビビッドな色合い",
   };
 
   const bgInstructions = {
@@ -990,8 +988,8 @@ function buildIllustPrompt(state) {
     };
     const countText = countLabels[state.illustFigureCount] || "1人の";
     const multiNote = (state.illustFigureCount !== "1")
-      ? "それぞれ異なるポーズ・動作（くつろぐ、歩く、食べる、読む、観光など）で表現します。"
-      : "くつろぐ、歩く、食べる、読む、観光などのポーズで表現します。";
+      ? "それぞれ異なるポーズ・動作（くつろぐ、歩く、食べる、読む、楽しむなど）で表現します。"
+      : "くつろぐ、歩く、食べる、読む、楽しむなどのポーズで表現します。";
 
     if (state.illustFigure === "include") {
       figureText = `環境とインタラクトするスタイリッシュな${countText}人間のフィギュアを含めます（${framing}で表現）。${multiNote}`;
@@ -1002,19 +1000,19 @@ function buildIllustPrompt(state) {
 
   return [
     `${theme}にインスパイアされた、洗練されたフラットベクターの編集パターンイラストを作成してください。`,
-    `象徴的なオブジェクト、文化的要素、ライフスタイルシーンを組み合わせたシームレスなアートコラージュとして構成します。`,
+    `テーマに関連する象徴的なオブジェクトやシーンを組み合わせたシームレスなアートコラージュとして構成します。`,
     "",
-    `プレミアムなスカンジナビア編集グラフィックス、ミッドセンチュリーテキスタイルパターン、現代のミュージアムショップイラスト、高級ライフスタイルマガジンビジュアルにインスパイアされています。`,
+    `スカンジナビア編集グラフィックス、ミッドセンチュリーテキスタイルパターン、現代のミュージアムショップイラストにインスパイアされています。`,
     "",
     `スタイル：`,
     `超クリーンなフラットベクターシェイプ / 大胆に簡略化されたシルエット / 遊び心のあるジオメトリック構成 / 強いネガティブスペース / シャープな編集ミニマリズム / スクリーンプリント風のカラーブロッキング / 高コントラストのグラフィックデザイン / ダイナミックな非対称配置 / アウトラインなし / グラデーションなし / フォトリアリズムなし / クリーンなマットな外観 / ファッショナブルなコンテンポラリーポスターエステティック`,
     "",
     `構成：`,
-    `${theme}の4〜5つの象徴的な要素を、認識可能な抽象シルエットに強く簡略化して含めます。文化・食・建築・乗り物・自然などのライフスタイル要素とミックスし、プレミアムテキスタイルプリントのようにリズミカルにキャンバス全体へ散りばめます。中央集中型の構成・現実的なパースペクティブを避けます。`,
+    `${theme}の4〜5つの象徴的な要素を、認識可能な抽象シルエットに強く簡略化して含めます。関連するオブジェクトやライフスタイル要素とミックスし、プレミアムテキスタイルプリントのようにリズミカルにキャンバス全体へ散りばめます。中央集中型の構成・現実的なパースペクティブを避けます。`,
     figureText,
     "",
     `カラーシステム：`,
-    `${theme}にインスパイアされた色を使用した、${colorInstructions[state.illustColors] || colorInstructions["3"]}。`,
+    `${colorToneFlat[state.illustColorTone] || colorToneFlat.soft}。高度にコントロールされた3色以内に限定。`,
     "",
     `背景：`,
     bgInstructions[state.illustBg] || bgInstructions["solid"],
@@ -1405,9 +1403,10 @@ document.querySelector("#resetBtn").addEventListener("click", resetForm);
 fields.illustFigure.addEventListener("change", () => updateFramingVisibility(fields.illustFigure.value));
 fields.illustStyle.addEventListener("change", () => {
   const val = fields.illustStyle.value;
-  document.querySelector("#illustFlatFields").style.display = val === "flat"      ? "" : "none";
-  document.querySelector("#illustIsoFields").style.display  = val === "isometric" ? "" : "none";
-  document.querySelector("#illustIconFields").style.display = val === "icon"      ? "" : "none";
+  document.querySelector("#illustColorToneRow").style.display = val === "icon" ? "none" : "";
+  document.querySelector("#illustFlatFields").style.display   = val === "flat"      ? "" : "none";
+  document.querySelector("#illustIsoFields").style.display    = val === "isometric" ? "" : "none";
+  document.querySelector("#illustIconFields").style.display   = val === "icon"      ? "" : "none";
   updatePrompt();
 });
 fields.wfPageType.addEventListener("change", () => updateWfSectionsPlaceholder(fields.wfPageType.value));
