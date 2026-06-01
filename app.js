@@ -79,7 +79,7 @@ const modeLabels = {
   proposal: "企画書・提案書",
   wireframe: "ワイヤーフレーム",
   policy: "社内制度・ルール整理",
-  "ui-review": "UI/UXレビュー",
+  "ui-review": "デザインレビュー",
   "design-direction": "デザイン指示書",
   email: "メール・依頼文",
   minutes: "議事録・要約リライト",
