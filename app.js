@@ -908,57 +908,89 @@ function buildIllustPrompt(state) {
   // アイソメトリック
   if (state.illustStyle === "isometric") {
     const colorToneMap = {
-      soft:  "Soft, bright and cheerful colors — light and approachable",
-      muted: "Muted, calm and desaturated tones — quiet and sophisticated",
-      vivid: "Bold, vivid and highly saturated colors — energetic and eye-catching",
-    };
-    const categoryMap = {
-      building: "建物・ランドマーク（店舗、施設、建築物など）",
-      item:     "小物・アイテム（食べ物、日用品、道具など）",
-      vehicle:  "乗り物・交通（電車、バス、自転車、車など）",
-      people:   "人物・キャラクター（歩く人、働く人など）",
-      nature:   "自然・植物（木、花、地形、動物など）",
-      mix:      "建物・小物・人物・乗り物など幅広くミックス",
+      soft:  "Bright clean palette. Bright white clothing. Soft and light accent colors. Each character limited to 2–3 colors. Consistent color palette across the entire collection.",
+      muted: "Calm muted palette. Bright white clothing. Muted and desaturated accent colors. Each character limited to 2–3 colors. Consistent color palette across the entire collection.",
+      vivid: "Bright clean palette. Bright white clothing. Fresh accent colors. Bold and vivid accent colors. Each character limited to 2–3 colors. Consistent color palette across the entire collection.",
     };
     const colorTone = colorToneMap[state.illustColorTone] || colorToneMap.soft;
-    const category = categoryMap[state.illustCategory] || categoryMap.mix;
     const objects = (state.illustObjects || "").trim();
-    const isPeople = state.illustCategory === "people";
 
-    const isBuilding = state.illustCategory === "building";
     const directionMap = {
-      left:       "All objects / figures facing left-forward direction",
-      right:      "All objects / figures facing right-forward direction",
-      "back-left":  isBuilding ? null : "All objects / figures facing away from the viewer, turned toward the left",
-      "back-right": isBuilding ? null : "All objects / figures facing away from the viewer, turned toward the right",
+      left:       "All figures facing left-forward direction.",
+      right:      "All figures facing right-forward direction.",
+      "back-left":  "All figures facing away from the viewer, turned toward the left.",
+      "back-right": "All figures facing away from the viewer, turned toward the right.",
       mix:        null,
     };
     const directionText = directionMap[state.illustDirection] || null;
 
     const contentText = objects
-      ? `内容：\n${objects}`
-      : `内容：\n${theme}に関連する人物キャラクターを10〜12点、それぞれ異なるシーン・ポーズ・役割でAIが考えて構成してください（スタッフ、客、作業中の人など、テーマに合わせて）。`;
+      ? `${objects}`
+      : `${theme}に関連するスタッフ、店員、客、作業スタッフなどをテーマに、異なる役割・ポーズ・シーンの人物8点を構成する。`;
 
     return [
-      `${theme}のキャラクターアセットコレクション。純白の背景に、10〜12点のアイソメトリックイラストをすっきりとしたグリッドレイアウトで配置。間隔は均等で、スケールは統一されており、各オブジェクトは切り抜き済みで、重なりはありません。`,
-      "",
+      `${theme}の人物キャラクターアセットコレクション。純白の背景。8点の人物素材を均等なグリッドレイアウトで配置。各オブジェクトは独立して配置され、重なりなし、統一スケール、十分な余白。`,
       contentText,
       "",
-      "日本のストックイラストの美学、日本のビジネスイラストスタイル、純粋なアイソメトリック投影、フラットなアイソメトリックベクターイラスト、企業向けインフォグラフィックスタイル。",
-      "",
-      "背が高くスリムな日本のビジネスキャラクター。身長は頭部6.5〜7個分程度。胴体に比べて脚が長く、肩幅は狭く、腕と脚は細身。軽やかなシルエット、都会的でエレガントなプロフェッショナルのプロポーション、柔らかな曲線を描く体の輪郭、リラックスした自然な姿勢、優雅な歩行ポーズ。",
-      "",
-      "顔のないキャラクター。目、口、その他の顔の特徴はなく、髪は単純な実線形状のみで表現。",
-      "",
-      "極めて簡略化された幾何学形状、最小限のディテール、大きなフラットな色面、ミニマルなデザイン、クリーンなベクターアートワーク、簡略化された服装・アクセサリー、親しみやすくプロフェッショナルな外観。",
-      "",
-      `${colorTone} / 各キャラクターは2〜3色に限定。セット全体を通して一貫した色使い。`,
+      "Japanese stock illustration aesthetic.",
+      "Flat vector people asset collection.",
+      "Pseudo-isometric view.",
+      "Almost two-dimensional appearance.",
+      "Minimal isometric hint.",
+      "Extremely weak three-dimensionality.",
+      "Extremely simplified human figures.",
+      "Large flat color areas.",
+      "Large uninterrupted color blocks.",
+      "Paper-cut style vector shapes.",
+      "Characters appear as simple graphic symbols.",
+      "Minimal contour variation.",
+      "Minimal visual information.",
+      "Minimal body articulation.",
+      "Minimal anatomical definition.",
+      "Geometric simplification.",
+      "Clean vector shapes.",
+      "Soft controlled curves.",
+      "Smooth rounded silhouettes.",
+      "Face without eyes, mouth, nose, eyebrows or facial details.",
+      "Hair represented as a single simple shape.",
+      "Hair colors limited to warm brown, chestnut brown, medium brown and light brown.",
+      "Tall and slim proportions.",
+      "Long legs relative to torso.",
+      "Lightweight silhouette.",
+      "Simplified hands and feet.",
+      "Simplified clothing.",
+      "No clothing folds.",
+      "No wrinkles.",
+      "No seams.",
+      "No fabric texture.",
+      "No decorative details.",
+      colorTone,
       directionText,
+      "Characters are isolated assets.",
+      "Characters are the primary subject.",
+      "Props are symbolic only.",
+      "Minimal prop detail.",
+      "No scene construction.",
+      "No environmental storytelling.",
+      "No realistic furniture.",
+      "No realistic equipment.",
+      "Pure flat appearance.",
+      "No outlines.",
+      "No strokes.",
+      "No shadows.",
+      "No gradients.",
+      "No textures.",
+      "No lighting effects.",
+      "No reflections.",
+      "No ambient occlusion.",
+      "No realistic rendering.",
+      "No volumetric modeling.",
+      "No sculpted forms.",
+      "Pure white background.",
       "",
-      "純粋なフラットな外観。輪郭線、影、グラデーション、テクスチャ、照明効果、反射、リアルなレンダリングは一切なし。",
-      "色の分離によってのみ表現される、非常に控えめなアイソメトリックな立体感。上面はわずかに明るく、側面は5〜10％暗くする。",
+      "Negative prompt:\nphotorealistic, realistic face, anime, manga, detailed eyes, detailed hands, realistic anatomy, muscular body, chibi, super deformed, mascot character, thick outlines, black stroke, shadows, gradient shading, texture, glossy material, 3D render, clay render, dramatic lighting, perspective view, realistic furniture, realistic equipment, interior scene, environmental storytelling, decorative elements, cluttered composition, excessive details, strong depth, strong three-dimensionality, volumetric shading",
       "",
-      "ネガティブプロンプト：\nフォトリアリスティック、リアルな顔、アニメ、マンガ、詳細な目、詳細な手、太い輪郭線、黒のストローク、影、グラデーションの陰影、テクスチャ、光沢のある素材、3Dレンダリング、ドラマチックな照明、透視図法、リアルな解剖学、筋肉質な体、短い脚、コンパクトな体、ちびキャラ、スーパーデフォルメ、かわいいマスコット、混雑した構図、詳細な背景、装飾要素、過剰なディテール",
+      "8K",
     ].filter(v => v !== null).join("\n");
   }
 
