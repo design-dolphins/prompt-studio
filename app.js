@@ -921,9 +921,9 @@ function buildIllustPrompt(state) {
     const isPeople = state.illustCategory === "people";
 
     const directionMap = {
-      left:  isPeople ? "All figures facing left-forward direction"  : "All objects facing left-forward direction",
-      right: isPeople ? "All figures facing right-forward direction" : "All objects facing right-forward direction",
-      back:  isPeople ? "All figures facing away from the viewer — rear-facing pose" : null,
+      left:  "All objects / figures facing left-forward direction",
+      right: "All objects / figures facing right-forward direction",
+      back:  state.illustCategory === "building" ? null : "All objects / figures facing away from the viewer — rear-facing",
       mix:   null,
     };
     const directionText = directionMap[state.illustDirection] || null;
