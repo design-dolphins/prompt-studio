@@ -943,7 +943,7 @@ function buildIllustPrompt(state) {
       "Japanese business illustration style / Pure isometric projection / Very flat appearance",
       "No outlines / No shadows / No gradients / No textures / No lighting effects / No realistic details",
       "面の色の塗り分けで立体感を表現（上面はやや明るく、側面は5〜10%暗め）",
-      isPeople ? "Moderately tall body proportions — approximately 7 head heights, slim but not exaggerated" : null,
+      isPeople ? "Slim but naturally proportioned figures — moderately tall, avoid overly elongated or exaggerated body ratios" : null,
       isPeople ? "Soft and gentle curves on body outlines — avoid blocky or overly geometric shapes" : null,
       isPeople ? "Natural, relaxed posture" : null,
       directionText,
