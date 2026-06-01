@@ -410,6 +410,8 @@ const defaults = {
   customConditions: "",
   illustStyle: "flat",
   illustColorTone: "soft",
+  illustElements: "",
+  illustStyleRef: "",
 };
 
 function buildWireframePrompt(state) {
