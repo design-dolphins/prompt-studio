@@ -18,6 +18,7 @@ const fields = {
   includeSummary: document.querySelector("#includeSummary"),
   illustStyle: document.querySelector("#illustStyle"),
   illustCategory: document.querySelector("#illustCategory"),
+  illustDirection: document.querySelector("#illustDirection"),
   illustIconSize: document.querySelector("#illustIconSize"),
   illustIconStroke: document.querySelector("#illustIconStroke"),
   illustColors: document.querySelector("#illustColors"),
@@ -919,6 +920,14 @@ function buildIllustPrompt(state) {
     const objects = (state.illustObjects || "").trim();
     const isPeople = state.illustCategory === "people";
 
+    const directionMap = {
+      left:  isPeople ? "All figures facing left-forward direction"  : "All objects facing left-forward direction",
+      right: isPeople ? "All figures facing right-forward direction" : "All objects facing right-forward direction",
+      back:  isPeople ? "All figures facing away from the viewer — rear-facing pose" : null,
+      mix:   null,
+    };
+    const directionText = directionMap[state.illustDirection] || null;
+
     return [
       `${theme}に関連するアイソメトリックイラストの素材集を6〜8個作成してください。`,
       `カテゴリ：${category}`,
@@ -930,6 +939,7 @@ function buildIllustPrompt(state) {
       isPeople ? "Slim and elongated body proportions — taller figure, smaller head ratio" : null,
       isPeople ? "Soft and gentle curves on body outlines — avoid blocky or overly geometric shapes" : null,
       isPeople ? "Natural, relaxed posture" : null,
+      directionText,
       "シンプルなジオメトリック形状、最小限の視覚情報",
       "Clean vector artwork / Friendly and approachable / Corporate infographic style",
       "",
