@@ -29,16 +29,15 @@
               <label>
                 作りたいもの
                 <select id="mode" name="mode">
-                  <option value="proposal">企画書・提案書</option>
-                  <option value="wireframe">ワイヤーフレーム</option>
-                  <option value="policy">社内制度・ルール整理</option>
-                  <option value="ui-review">デザインレビュー</option>
-                  <option value="design-direction">デザイン指示書</option>
-                  <option value="email">メール・依頼文</option>
-                  <option value="minutes">議事録・要約リライト</option>
                   <option value="brainstorm">アイデア出し</option>
                   <option value="research">リサーチ・競合分析</option>
+                  <option value="proposal">企画書・提案書</option>
+                  <option value="wireframe">ワイヤーフレーム</option>
+                  <option value="design-direction">デザイン指示書</option>
+                  <option value="ui-review">デザインレビュー</option>
                   <option value="illust">イラスト生成</option>
+                  <option value="minutes">議事録・要約リライト</option>
+                  <option value="email">メール・依頼文</option>
                   <option value="custom">自由に作る</option>
                 </select>
                 <small class="field-hint" id="modeHint"></small>
@@ -85,42 +84,6 @@
                   <option value="柔らかめ・親しみやすい">柔らかめ・親しみやすい</option>
                   <option value="簡潔・要点重視">簡潔・要点重視</option>
                 </select>
-              </label>
-            </fieldset>
-
-            <fieldset id="fieldset-policy" style="display:none">
-              <legend>社内制度・ルール整理設定</legend>
-
-              <label>
-                制度の種類
-                <select id="policyType" name="policyType">
-                  <option value="評価制度">評価制度</option>
-                  <option value="報酬・給与制度">報酬・給与制度</option>
-                  <option value="育成・研修制度">育成・研修制度</option>
-                  <option value="働き方・勤怠制度">働き方・勤怠制度</option>
-                  <option value="インセンティブ制度">インセンティブ制度</option>
-                  <option value="その他">その他</option>
-                </select>
-              </label>
-
-              <label>
-                業種・規模
-                <input id="policyCompany" name="policyCompany" type="text" placeholder="例：IT系・50名、製造業・200名" />
-              </label>
-
-              <label>
-                困っていること
-                <textarea id="policyIssue" name="policyIssue" rows="4" placeholder="例：評価が属人的でメンバーの納得感が低い、職種間で不公平感がある、採用・定着に課題がある"></textarea>
-              </label>
-
-              <label>
-                どうなりたいか
-                <input id="policyGoal" name="policyGoal" type="text" placeholder="例：誰が見ても公平な評価の仕組みを作りたい、運用しやすい制度にしたい" />
-              </label>
-
-              <label>
-                参考情報（任意）
-                <textarea id="policyMaterials" name="policyMaterials" rows="3" placeholder="例：現行の制度メモ、経営陣の要望、導入希望時期など"></textarea>
               </label>
             </fieldset>
 
