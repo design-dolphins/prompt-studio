@@ -389,7 +389,8 @@ textarea:focus {
 #uiOptionalGroup,
 #designOptionalGroup,
 #researchOptionalGroup,
-#brainstormOptionalGroup {
+#brainstormOptionalGroup,
+#compOptionalGroup {
   display: grid;
   gap: 14px;
 }
@@ -398,9 +399,8 @@ textarea:focus {
   font-size: 0.82rem;
   font-weight: 850;
   color: var(--ink);
-  margin: 4px 0 0;
-  padding-top: 14px;
-  border-top: 1px solid var(--line);
+  margin: 0;
+  padding-top: 2px;
 }
 
 .site-footer {
