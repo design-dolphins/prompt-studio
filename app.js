@@ -76,7 +76,6 @@ const fields = {
   researchOwnUrl: document.querySelector("#researchOwnUrl"),
   researchTargets: document.querySelector("#researchTargets"),
   researchFocus: document.querySelector("#researchFocus"),
-  minType: document.querySelector("#minType"),
   minFormat: document.querySelector("#minFormat"),
   minWish: document.querySelector("#minWish"),
   minContent: document.querySelector("#minContent"),
@@ -615,7 +614,7 @@ function buildMinutesPrompt(state) {
   const isEmail = state.minFormat === "email";
 
   const metaLines = [
-    `- 会議の種類：${state.minType || "定例会"}`,
+    
     opt("どう出してほしいか", state.minWish),
     opt("補足", state.request),
   ].filter(Boolean);
