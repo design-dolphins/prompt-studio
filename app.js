@@ -55,6 +55,11 @@ const fields = {
   designRef: document.querySelector("#designRef"),
   designNg: document.querySelector("#designNg"),
 
+  compService: document.querySelector("#compService"),
+  compOwnUrl: document.querySelector("#compOwnUrl"),
+  compCompetitorUrl: document.querySelector("#compCompetitorUrl"),
+  compPurpose: document.querySelector("#compPurpose"),
+  compFocus: document.querySelector("#compFocus"),
   researchTheme: document.querySelector("#researchTheme"),
   researchPurpose: document.querySelector("#researchPurpose"),
   researchOwnUrl: document.querySelector("#researchOwnUrl"),
@@ -89,6 +94,7 @@ const modeLabels = {
   email: "メール・依頼文",
   minutes: "議事録・要約リライト",
   brainstorm: "アイデア出し",
+  competitor: "競合・参考分析",
   research: "リサーチ・競合分析",
   custom: "自由に作る",
   illust: "イラスト生成",
@@ -102,6 +108,7 @@ const modeHints = {
   email: "営業、依頼、確認、謝罪などの文章を作りたい時。",
   minutes: "議事録を読みやすく整えたい時。",
   brainstorm: "施策案、企画案、切り口を広げたい時。",
+  competitor: "競合サイトを分析して、差別化戦略と打ち出し方を考えたい時。",
   research: "競合、顧客、業界、参考事例を整理したい時。",
   custom: "上にない用途を自由に作りたい時。",
   illust: "フラットベクター編集イラストの画像生成プロンプトを作りたい時。",
@@ -115,6 +122,7 @@ const exampleRequests = {
   email: "納期延期をクライアントに丁重にお願いするメールを書きたい",
   minutes: "プロジェクトキックオフ会議の議事録を整理したい",
   brainstorm: "",
+  competitor: "",
   research: "",
   custom: "",
   illust: "",
@@ -128,6 +136,7 @@ const roleMap = {
   email: "営業コミュニケーション設計AI",
   minutes: "ビジネスコミュニケーション編集AI",
   brainstorm: "戦略プランナー兼アイデアクリエイターAI",
+  competitor: "Web戦略コンサルタント兼競合分析AI",
   research: "市場分析コンサルタント兼リサーチAI",
   custom: "プロンプトエンジニア兼専門領域支援AI",
   illust: "フラットベクターイラスト生成AI",
@@ -724,6 +733,45 @@ function buildDesignPrompt(state) {
   ].join("\n");
 }
 
+function buildCompetitorPrompt(state) {
+  const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
+  const infoLines = [
+    opt("サービス・事業内容", state.compService),
+    opt("調査対象のサイトURL", state.compOwnUrl),
+    opt("競合サイトURL", state.compCompetitorUrl),
+    opt("サイト目的", state.compPurpose),
+    opt("特に見たい観点", state.compFocus),
+  ].filter(Boolean);
+
+  return [
+    "あなたは「Web戦略コンサルタント兼競合分析AI」です。",
+    "以下の情報をもとに、事業・競合分析と戦略提案を行ってください。",
+    "分析で終わらず「だからこうすべき」という提案まで出してください。",
+    "",
+    "# 【分析情報】",
+    ...infoLines,
+    "",
+    "# 【制約条件】",
+    "- 単なる情報列挙ではなく「示唆と提案」を含める",
+    "- 強み・弱みは両面で整理する",
+    "- 事実と推測を分離し、推測には「※推定」と明記する",
+    "- URLが提供された場合は構成・訴求・デザイン・導線まで具体的に比較する",
+    "- 分析結果を踏まえた具体的なアクション提案まで出す",
+    "",
+    "# 【出力形式】",
+    "1. 調査サマリー（全体感・重要示唆）",
+    "2. サービスの提供価値と強み",
+    "3. ユーザー観点分析（ターゲットのニーズ・不満・選定理由）",
+    "4. 競合比較（構成・訴求・デザイン・導線の観点で）",
+    "5. 差別化ポイントと改善余地",
+    "6. 戦略提案（何をどう打ち出すべきか）",
+    "7. サイトで優先して伝えるべき内容",
+    "8. 今後追加で調査すべき論点",
+    "",
+    "以上を確認しました。それでは今すぐ作業を開始してください。",
+  ].join("\n");
+}
+
 function buildResearchPrompt(state) {
   const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
   const infoLines = [
@@ -1101,6 +1149,7 @@ function updateIllustVisibility(mode) {
   const isProposal  = mode === "proposal";
   const isUiReview  = mode === "ui-review";
   const isDesign    = mode === "design-direction";
+  const isCompetitor = mode === "competitor";
   const isResearch  = mode === "research";
   const isMinutes   = mode === "minutes";
   const isBrainstorm = mode === "brainstorm";
@@ -1109,7 +1158,7 @@ function updateIllustVisibility(mode) {
 
   // 専用フィールドがあるモード（標準フォームを隠す）
   const hasDedicated = isIllust || isWireframe || isProposal || isUiReview ||
-                       isDesign || isResearch || isMinutes || isBrainstorm || isCustom || isEmailMode;
+                       isDesign || isResearch || isCompetitor || isMinutes || isBrainstorm || isCustom || isEmailMode;
 
   // 各専用fieldsetの表示制御
   document.querySelector("#fieldset-illust").style.display    = isIllust    ? "" : "none";
@@ -1117,6 +1166,7 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-proposal").style.display  = isProposal  ? "" : "none";
   document.querySelector("#fieldset-uireview").style.display  = isUiReview  ? "" : "none";
   document.querySelector("#fieldset-design").style.display    = isDesign    ? "" : "none";
+  document.querySelector("#fieldset-competitor").style.display = isCompetitor ? "" : "none";
   document.querySelector("#fieldset-research").style.display  = isResearch  ? "" : "none";
   if (isResearch) {
     const theme = document.querySelector("#researchTheme");
@@ -1250,6 +1300,7 @@ function buildPrompt(state) {
   if (state.mode === "proposal") return buildProposalPrompt(state);
   if (state.mode === "ui-review") return buildUiReviewPrompt(state);
   if (state.mode === "design-direction") return buildDesignPrompt(state);
+  if (state.mode === "competitor") return buildCompetitorPrompt(state);
   if (state.mode === "research") return buildResearchPrompt(state);
   if (state.mode === "minutes") return buildMinutesPrompt(state);
   if (state.mode === "brainstorm") return buildBrainstormPrompt(state);

@@ -30,6 +30,7 @@
                 作りたいもの
                 <select id="mode" name="mode">
                   <option value="custom">自由に作る</option>
+                  <option value="competitor">競合・参考分析</option>
                   <option value="brainstorm">アイデア出し</option>
                   <option value="research">リサーチ・競合分析</option>
                   <option value="proposal">企画書・提案書</option>
@@ -178,6 +179,36 @@
                 どう出してほしいか（任意）
                 <input id="minWish" name="minWish" type="text" placeholder="例：箇条書きを多めに、Slack共有用に短く、決定事項を目立たせて" />
               </label>
+            </fieldset>
+
+            <fieldset id="fieldset-competitor" style="display:none">
+              <legend>競合・参考分析設定</legend>
+
+              <label>
+                サービス・事業内容
+                <textarea id="compService" name="compService" rows="3" placeholder="例：中小企業向けのWeb制作会社。コーポレートサイトやECサイトの制作を中心に行っている"></textarea>
+              </label>
+
+              <label>
+                調査対象のサイトURL
+                <input id="compOwnUrl" name="compOwnUrl" type="text" placeholder="例：https://example.com" />
+              </label>
+
+              <label>
+                競合サイトURL
+                <textarea id="compCompetitorUrl" name="compCompetitorUrl" rows="3" placeholder="例：https://competitor1.com、https://competitor2.com"></textarea>
+              </label>
+
+              <label>
+                サイト目的
+                <input id="compPurpose" name="compPurpose" type="text" placeholder="例：問い合わせ獲得、採用応募、資料請求" />
+              </label>
+
+              <label>
+                特に見たい観点（任意）
+                <input id="compFocus" name="compFocus" type="text" placeholder="例：デザインのトーン、CTAの配置、コンテンツ構成" />
+              </label>
+
             </fieldset>
 
             <fieldset id="fieldset-research" style="display:none">
