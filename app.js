@@ -58,7 +58,7 @@ const fields = {
   compService: document.querySelector("#compService"),
   compOwnUrl: document.querySelector("#compOwnUrl"),
   compCompetitorUrl: document.querySelector("#compCompetitorUrl"),
-  compPurpose: document.querySelector("#compPurpose"),
+  compSiteType: document.querySelector("#compSiteType"),
   compFocus: document.querySelector("#compFocus"),
   compNotes: document.querySelector("#compNotes"),
   researchTheme: document.querySelector("#researchTheme"),
@@ -740,7 +740,7 @@ function buildCompetitorPrompt(state) {
     opt("サービス・事業内容", state.compService),
     opt("調査対象のサイトURL", state.compOwnUrl),
     opt("競合サイトURL", state.compCompetitorUrl),
-    opt("サイト目的", state.compPurpose),
+    opt("サイトの種類", state.compSiteType),
     opt("特に見たい観点", state.compFocus),
     opt("補足", state.compNotes),
   ].filter(Boolean);
