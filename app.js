@@ -55,6 +55,15 @@ const fields = {
   designRef: document.querySelector("#designRef"),
   designNg: document.querySelector("#designNg"),
 
+  siteService: document.querySelector("#siteService"),
+  siteSiteType: document.querySelector("#siteSiteType"),
+  siteTarget: document.querySelector("#siteTarget"),
+  siteUsage: document.querySelector("#siteUsage"),
+  siteIssue: document.querySelector("#siteIssue"),
+  sitePages: document.querySelector("#sitePages"),
+  sitePrevResult: document.querySelector("#sitePrevResult"),
+  siteContent: document.querySelector("#siteContent"),
+  siteNotes: document.querySelector("#siteNotes"),
   compService: document.querySelector("#compService"),
   compOwnUrl: document.querySelector("#compOwnUrl"),
   compCompetitorUrl: document.querySelector("#compCompetitorUrl"),
@@ -94,6 +103,7 @@ const modeLabels = {
   email: "メール・依頼文",
   minutes: "議事録・要約リライト",
   brainstorm: "アイデア出し",
+  sitedesign: "サイト設計",
   competitor: "競合分析",
   research: "リサーチ・競合分析",
   custom: "自由に作る",
@@ -108,6 +118,7 @@ const modeHints = {
   email: "営業、依頼、確認、謝罪などの文章を作りたい時。",
   minutes: "議事録を読みやすく整えたい時。",
   brainstorm: "施策案、企画案、切り口を広げたい時。",
+  sitedesign: "サイトの構成・導線・提案をまとめたい時。",
   competitor: "競合サイトを分析して、差別化戦略と打ち出し方を考えたい時。",
   research: "競合、顧客、業界、参考事例を整理したい時。",
   custom: "上にない用途を自由に作りたい時。",
@@ -122,6 +133,7 @@ const exampleRequests = {
   email: "納期延期をクライアントに丁重にお願いするメールを書きたい",
   minutes: "プロジェクトキックオフ会議の議事録を整理したい",
   brainstorm: "",
+  sitedesign: "",
   competitor: "",
   research: "",
   custom: "",
@@ -136,6 +148,7 @@ const roleMap = {
   email: "営業コミュニケーション設計AI",
   minutes: "ビジネスコミュニケーション編集AI",
   brainstorm: "戦略プランナー兼アイデアクリエイターAI",
+  sitedesign: "Webディレクター兼サイト設計AI",
   competitor: "Web戦略コンサルタント兼競合分析AI",
   research: "市場分析コンサルタント兼リサーチAI",
   custom: "プロンプトエンジニア兼専門領域支援AI",
@@ -733,6 +746,89 @@ function buildDesignPrompt(state) {
   ].join("\n");
 }
 
+function buildSiteDesignPrompt(state) {
+  const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
+
+  const infoLines = [
+    opt("サービス・事業内容", state.siteService),
+    opt("サイトの種類", state.siteSiteType),
+    opt("ターゲット", state.siteTarget),
+    opt("現状の課題・背景", state.siteIssue),
+    opt("想定ページ数", state.sitePages),
+    opt("必須コンテンツ", state.siteContent),
+    opt("補足・その他", state.siteNotes),
+  ].filter(Boolean);
+
+  const prevResult = (state.sitePrevResult || "").trim();
+  const prevSection = prevResult
+    ? `\n# 【競合分析の結果】\n${prevResult}`
+    : "";
+
+  const usage = state.siteUsage || "client";
+
+  if (usage === "internal") {
+    return [
+      "あなたは「Webディレクター兼サイト設計AI」です。",
+      "以下の情報をもとに、制作チームの判断材料として使えるサイト設計をまとめてください。",
+      "",
+      "# 【サイト情報】",
+      ...infoLines,
+      prevSection,
+      "",
+      "# 【制約条件】",
+      "- 制作判断に使えるレベルまで具体化する",
+      "- 競合分析の結果がある場合はサイト設計に反映する",
+      "- ページ数が未定の場合はAIが適切な構成を提案する",
+      "- 情報不足は合理的な推定で補い「※推定」と明記する",
+      "- リスクや注意点は楽観的にならず正直に書く",
+      "",
+      "# 【出力形式】",
+      "1. サイトの役割（1〜2文で）",
+      "2. 成功指標（KPI）",
+      "3. ターゲット整理（優先順位をつけて）",
+      "4. 訴求戦略（誰に・何を・どう伝えるか）",
+      "5. ページ構成案",
+      "6. ユーザー導線（主要な動線を2〜3パターン）",
+      "7. 制作リスクと対策案",
+      "",
+      "以上を確認しました。それでは今すぐ作業を開始してください。",
+    ].filter(v => v !== null).join("\n");
+  }
+
+  const isSlide = usage === "slide";
+
+  return [
+    "あなたは「Webディレクター兼提案AI」です。",
+    isSlide
+      ? "以下の情報をもとに、クライアントへのプレゼンに使えるサイト設計とスライド構成をまとめてください。"
+      : "以下の情報をもとに、クライアントへの提案に使えるサイト設計をまとめてください。",
+    "専門用語を避け、読んで納得できる言葉で書いてください。",
+    "",
+    "# 【サイト情報】",
+    ...infoLines,
+    prevSection,
+    "",
+    "# 【制約条件】",
+    "- 専門用語を避けクライアントが読んでも理解できる言葉で書く",
+    "- 「なぜそうするか」の理由を添えて提案する",
+    "- メリットや期待効果を明確に示す",
+    "- 競合分析の結果がある場合はサイト設計に反映する",
+    "- ページ数が未定の場合はAIが適切な構成を提案する",
+    isSlide ? "- スライド1枚1メッセージを意識する" : null,
+    "",
+    "# 【出力形式】",
+    "1. 提案サマリー（何のためのサイトか・何を実現するか）",
+    "2. 現状の課題と背景",
+    "3. 提案するサイトの方向性（なぜこのアプローチか）",
+    "4. ページ構成案（各ページの役割付き）",
+    "5. ユーザー導線（メインの流れを2〜3パターン）",
+    "6. 期待できる効果・成果指標",
+    isSlide ? "7. スライド構成案（表形式）\n   | No | タイトル | 伝えたいこと | 主な内容 |" : null,
+    "",
+    "以上を確認しました。それでは今すぐ作業を開始してください。",
+  ].filter(v => v !== null).join("\n");
+}
+
 function buildCompetitorPrompt(state) {
   const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
   const infoLines = [
@@ -1152,6 +1248,7 @@ function updateIllustVisibility(mode) {
   const isProposal  = mode === "proposal";
   const isUiReview  = mode === "ui-review";
   const isDesign    = mode === "design-direction";
+  const isSiteDesign = mode === "sitedesign";
   const isCompetitor = mode === "competitor";
   const isResearch  = mode === "research";
   const isMinutes   = mode === "minutes";
@@ -1161,7 +1258,7 @@ function updateIllustVisibility(mode) {
 
   // 専用フィールドがあるモード（標準フォームを隠す）
   const hasDedicated = isIllust || isWireframe || isProposal || isUiReview ||
-                       isDesign || isResearch || isCompetitor || isMinutes || isBrainstorm || isCustom || isEmailMode;
+                       isDesign || isResearch || isCompetitor || isSiteDesign || isMinutes || isBrainstorm || isCustom || isEmailMode;
 
   // 各専用fieldsetの表示制御
   document.querySelector("#fieldset-illust").style.display    = isIllust    ? "" : "none";
@@ -1169,6 +1266,7 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-proposal").style.display  = isProposal  ? "" : "none";
   document.querySelector("#fieldset-uireview").style.display  = isUiReview  ? "" : "none";
   document.querySelector("#fieldset-design").style.display    = isDesign    ? "" : "none";
+  document.querySelector("#fieldset-sitedesign").style.display = isSiteDesign ? "" : "none";
   document.querySelector("#fieldset-competitor").style.display = isCompetitor ? "" : "none";
   document.querySelector("#fieldset-research").style.display  = isResearch  ? "" : "none";
   if (isResearch) {
@@ -1187,7 +1285,7 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-finish").style.display  = hasDedicated ? "none" : "";
 
   // 補足欄: illust/minutes/customは非表示、他の専用モードは表示（下部に）
-  const hideRequest = isIllust || isMinutes || isCustom || isCompetitor;
+  const hideRequest = isIllust || isMinutes || isCustom || isCompetitor || isSiteDesign;
   document.querySelector("#fieldset-request").style.display = hideRequest ? "none" : "";
   document.querySelector("#wfSectionsGroup").style.display = isWireframe ? "" : "none";
   document.querySelector("#wfNotesGroup").style.display = isWireframe ? "" : "none";
@@ -1303,6 +1401,7 @@ function buildPrompt(state) {
   if (state.mode === "proposal") return buildProposalPrompt(state);
   if (state.mode === "ui-review") return buildUiReviewPrompt(state);
   if (state.mode === "design-direction") return buildDesignPrompt(state);
+  if (state.mode === "sitedesign") return buildSiteDesignPrompt(state);
   if (state.mode === "competitor") return buildCompetitorPrompt(state);
   if (state.mode === "research") return buildResearchPrompt(state);
   if (state.mode === "minutes") return buildMinutesPrompt(state);

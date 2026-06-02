@@ -390,7 +390,8 @@ textarea:focus {
 #designOptionalGroup,
 #researchOptionalGroup,
 #brainstormOptionalGroup,
-#compOptionalGroup {
+#compOptionalGroup,
+#siteOptionalGroup {
   display: grid;
   gap: 14px;
 }

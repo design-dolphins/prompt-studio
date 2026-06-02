@@ -31,6 +31,7 @@
                 <select id="mode" name="mode">
                   <option value="custom">自由に作る</option>
                   <option value="competitor">競合分析</option>
+                  <option value="sitedesign">サイト設計</option>
                   <option value="brainstorm">アイデア出し</option>
                   <option value="research">リサーチ・競合分析</option>
                   <option value="proposal">企画書・提案書</option>
@@ -179,6 +180,64 @@
                 どう出してほしいか（任意）
                 <input id="minWish" name="minWish" type="text" placeholder="例：箇条書きを多めに、Slack共有用に短く、決定事項を目立たせて" />
               </label>
+            </fieldset>
+
+            <fieldset id="fieldset-sitedesign" style="display:none">
+              <legend>サイト設計設定</legend>
+
+              <label>
+                サービス・事業内容
+                <textarea id="siteService" name="siteService" rows="3" placeholder="例：中小企業向けのWeb制作会社。コーポレートサイトやECサイトの制作を中心に行っている"></textarea>
+              </label>
+
+              <label>
+                サイトの種類
+                <input id="siteSiteType" name="siteSiteType" type="text" placeholder="例：コーポレートサイト、採用サイト、LP、ECサイト" />
+              </label>
+
+              <label>
+                ターゲット
+                <input id="siteTarget" name="siteTarget" type="text" placeholder="例：30〜50代の中小企業経営者、新卒採用を検討している人事担当者" />
+              </label>
+
+              <label>
+                用途
+                <select id="siteUsage" name="siteUsage">
+                  <option value="client">クライアント向け提案</option>
+                  <option value="internal">社内整理</option>
+                  <option value="slide">スライド構成付き</option>
+                </select>
+              </label>
+
+              <div id="siteOptionalGroup">
+                <p class="optional-section-label">任意</p>
+
+                <label>
+                  現状の課題・背景
+                  <textarea id="siteIssue" name="siteIssue" rows="3" placeholder="例：現サイトが古く問い合わせが少ない、競合と差別化できていない"></textarea>
+                </label>
+
+                <label>
+                  想定ページ数
+                  <input id="sitePages" name="sitePages" type="text" placeholder="例：8ページ、10〜15ページ（未定の場合はAIが提案）" />
+                </label>
+
+                <label>
+                  競合分析の結果
+                  <textarea id="sitePrevResult" name="sitePrevResult" rows="5" placeholder="競合分析モードの結果をそのまま貼り付け、または概要を入力"></textarea>
+                </label>
+
+                <label>
+                  必須コンテンツ
+                  <input id="siteContent" name="siteContent" type="text" placeholder="例：採用情報、実績紹介、代表メッセージ" />
+                </label>
+
+                <label>
+                  補足・その他
+                  <textarea id="siteNotes" name="siteNotes" rows="3" placeholder="例：追加で気になる点や希望があれば"></textarea>
+                </label>
+              </div>
+
             </fieldset>
 
             <fieldset id="fieldset-competitor" style="display:none">
