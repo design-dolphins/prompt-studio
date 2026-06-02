@@ -394,6 +394,15 @@ textarea:focus {
   gap: 14px;
 }
 
+.optional-section-label {
+  font-size: 0.82rem;
+  font-weight: 850;
+  color: var(--ink);
+  margin: 4px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--line);
+}
+
 .site-footer {
   margin-top: 48px;
   border-top: 1px solid var(--line);

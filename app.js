@@ -60,6 +60,7 @@ const fields = {
   compCompetitorUrl: document.querySelector("#compCompetitorUrl"),
   compPurpose: document.querySelector("#compPurpose"),
   compFocus: document.querySelector("#compFocus"),
+  compNotes: document.querySelector("#compNotes"),
   researchTheme: document.querySelector("#researchTheme"),
   researchPurpose: document.querySelector("#researchPurpose"),
   researchOwnUrl: document.querySelector("#researchOwnUrl"),
@@ -741,6 +742,7 @@ function buildCompetitorPrompt(state) {
     opt("競合サイトURL", state.compCompetitorUrl),
     opt("サイト目的", state.compPurpose),
     opt("特に見たい観点", state.compFocus),
+    opt("補足", state.compNotes),
   ].filter(Boolean);
 
   return [
@@ -1185,7 +1187,7 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-finish").style.display  = hasDedicated ? "none" : "";
 
   // 補足欄: illust/minutes/customは非表示、他の専用モードは表示（下部に）
-  const hideRequest = isIllust || isMinutes || isCustom;
+  const hideRequest = isIllust || isMinutes || isCustom || isCompetitor;
   document.querySelector("#fieldset-request").style.display = hideRequest ? "none" : "";
   document.querySelector("#wfSectionsGroup").style.display = isWireframe ? "" : "none";
   document.querySelector("#wfNotesGroup").style.display = isWireframe ? "" : "none";

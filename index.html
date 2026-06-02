@@ -185,18 +185,13 @@
               <legend>競合分析設定</legend>
 
               <label>
-                サービス・事業内容
-                <textarea id="compService" name="compService" rows="3" placeholder="例：中小企業向けのWeb制作会社。コーポレートサイトやECサイトの制作を中心に行っている"></textarea>
-              </label>
-
-              <label>
                 調査対象のサイトURL（任意）
                 <input id="compOwnUrl" name="compOwnUrl" type="text" placeholder="例：https://example.com（なければAIが調査）" />
               </label>
 
               <label>
-                競合サイトURL（任意）
-                <textarea id="compCompetitorUrl" name="compCompetitorUrl" rows="3" placeholder="例：https://competitor1.com（なければAIが競合を選定して調査）"></textarea>
+                サービス・事業内容
+                <textarea id="compService" name="compService" rows="3" placeholder="例：中小企業向けのWeb制作会社。コーポレートサイトやECサイトの制作を中心に行っている"></textarea>
               </label>
 
               <label>
@@ -204,10 +199,24 @@
                 <input id="compPurpose" name="compPurpose" type="text" placeholder="例：問い合わせ獲得、採用応募、資料請求" />
               </label>
 
-              <label>
-                特に見たい観点（任意）
-                <input id="compFocus" name="compFocus" type="text" placeholder="例：デザインのトーン、CTAの配置、コンテンツ構成" />
-              </label>
+              <div id="compOptionalGroup">
+                <p class="optional-section-label">任意</p>
+
+                <label>
+                  競合サイトURL
+                  <textarea id="compCompetitorUrl" name="compCompetitorUrl" rows="3" placeholder="例：https://competitor1.com（なければAIが競合を選定して調査）"></textarea>
+                </label>
+
+                <label>
+                  特に見たい観点
+                  <input id="compFocus" name="compFocus" type="text" placeholder="例：デザインのトーン、CTAの配置、コンテンツ構成" />
+                </label>
+
+                <label>
+                  補足・その他
+                  <textarea id="compNotes" name="compNotes" rows="3" placeholder="例：追加で気になる点や希望があれば"></textarea>
+                </label>
+              </div>
 
             </fieldset>
 
