@@ -32,15 +32,11 @@
                   <option value="custom">自由に作る</option>
                   <option value="competitor">競合分析</option>
                   <option value="sitedesign">サイト設計</option>
-                  <option value="brainstorm">アイデア出し</option>
-                  <option value="research">リサーチ・競合分析</option>
-                  <option value="proposal">企画書・提案書</option>
                   <option value="wireframe">ワイヤーフレーム</option>
                   <option value="design-direction">デザイン指示書</option>
                   <option value="ui-review">デザインレビュー</option>
-                  <option value="illust">イラスト生成</option>
                   <option value="minutes">議事録・要約リライト</option>
-                  <option value="email">メール・依頼文</option>
+                  <option value="illust">イラスト生成</option>
                 </select>
                 <small class="field-hint" id="modeHint"></small>
               </label>
@@ -55,14 +51,33 @@
               </label>
 
               <label>
-                ターゲットユーザー
-                <input id="designAudience" name="designAudience" type="text" placeholder="例：30代女性、BtoB企業担当者、初めて見る人" />
+                ペルソナ
+                <input id="designAudience" name="designAudience" type="text" placeholder="例：30代男性の中小企業経営者、ITツールに不慣れ" />
               </label>
 
               <label>
                 ブランドトーン
                 <input id="designTone" name="designTone" type="text" placeholder="例：高級感・信頼感、ミニマル、ポップ、テック感、温かみ" />
               </label>
+
+              <div id="designOptionalGroup">
+                <p class="optional-section-label">任意</p>
+
+                <label>
+                  サイト設計の結果
+                  <textarea id="designPrevResult" name="designPrevResult" rows="4" placeholder="サイト設計モードの結果をそのまま貼り付け、または概要を入力"></textarea>
+                </label>
+
+                <label>
+                  参考サイト・URL
+                  <input id="designRef" name="designRef" type="text" placeholder="例：https://example.com" />
+                </label>
+
+                <label>
+                  NG表現・避けたい方向性
+                  <input id="designNg" name="designNg" type="text" placeholder="例：過度な装飾、古くさいフォント、圧迫感のある配色" />
+                </label>
+              </div>
 
             </fieldset>
 
@@ -297,26 +312,26 @@
 
             <fieldset id="fieldset-uireview" style="display:none">
               <legend>デザインレビュー設定</legend>
+              <p class="optional-section-label" style="font-weight:400; font-size:0.8rem; color:#A4A4A4; border:none; padding-top:0;">デザインやワイヤーのスクリーンショットを添付してから使ってください</p>
 
               <label>
                 レビュー観点
                 <select id="uiPerspective" name="uiPerspective">
-                  <option value="overall">UI/UX総合</option>
-                  <option value="cv">コンバージョン改善</option>
-                  <option value="usability">ユーザビリティ</option>
+                  <option value="overall">総合レビュー</option>
+                  <option value="cv">CV・導線改善</option>
                   <option value="design">デザイン品質</option>
                   <option value="accessibility">アクセシビリティ</option>
                 </select>
               </label>
 
               <label>
-                ページの種類
-                <input id="uiPageType" name="uiPageType" type="text" placeholder="例：LP、トップページ、フォームページ、採用ページ" />
+                サイトの種類
+                <input id="uiPageType" name="uiPageType" type="text" placeholder="例：LP、コーポレートサイト、採用サイト、フォームページ" />
               </label>
 
               <label>
-                ターゲットユーザー
-                <input id="uiTarget" name="uiTarget" type="text" placeholder="例：30代女性、BtoB企業の担当者、初めて訪れる人" />
+                ペルソナ
+                <input id="uiTarget" name="uiTarget" type="text" placeholder="例：30代男性の中小企業経営者、ITツールに不慣れ" />
               </label>
             </fieldset>
 
@@ -394,6 +409,11 @@
               <label>
                 参考資料（企画書・議事録・要件など）
                 <textarea id="wfMaterials" name="wfMaterials" rows="6" placeholder="企画書・議事録・要件メモ・構成案などをそのまま貼り付けてください。この内容をもとにテキストやセクション構成を考えます。"></textarea>
+              </label>
+
+              <label>
+                サイト設計の結果（任意）
+                <textarea id="wfSiteDesign" name="wfSiteDesign" rows="4" placeholder="サイト設計モードの結果をそのまま貼り付けてください。ページ構成・導線をワイヤーに反映します。"></textarea>
               </label>
             </fieldset>
 

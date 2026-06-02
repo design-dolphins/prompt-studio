@@ -37,6 +37,7 @@ const fields = {
   wfPageName: document.querySelector("#wfPageName"),
   wfPagePurpose: document.querySelector("#wfPagePurpose"),
   wfMaterials: document.querySelector("#wfMaterials"),
+  wfSiteDesign: document.querySelector("#wfSiteDesign"),
   wfSections: document.querySelector("#wfSections"),
   wfNotes: document.querySelector("#wfNotes"),
   propIndustry: document.querySelector("#propIndustry"),
@@ -54,6 +55,7 @@ const fields = {
   designTone: document.querySelector("#designTone"),
   designRef: document.querySelector("#designRef"),
   designNg: document.querySelector("#designNg"),
+  designPrevResult: document.querySelector("#designPrevResult"),
 
   siteService: document.querySelector("#siteService"),
   siteSiteType: document.querySelector("#siteSiteType"),
@@ -475,6 +477,7 @@ function buildWireframePrompt(state) {
   ].join("\n");
 
   const materialsText = (state.wfMaterials || "").trim();
+  const siteDesignText = (state.wfSiteDesign || "").trim();
   const notesText = (state.request || "").trim();
 
   return [
@@ -497,7 +500,8 @@ function buildWireframePrompt(state) {
     "- 矢印：SVGの矢印を使用",
     "- テキストは添付資料をもとに入力。資料にない場合は推測で補い、末尾に明記する",
     "",
-    materialsText ? `# 【参考情報・素材】\n${materialsText}` : null,
+    materialsText    ? `# 【参考情報・素材】\n${materialsText}`    : null,
+    siteDesignText   ? `# 【サイト設計の結果】\n${siteDesignText}` : null,
     notesText     ? `# 【補足】\n${notesText}`               : null,
     "",
     outputType === "image" ? imageRules : htmlRules,
@@ -712,12 +716,17 @@ function buildDesignPrompt(state) {
   const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
   const infoLines = [
     opt("制作対象", state.designTarget),
-    opt("ターゲットユーザー", state.designAudience),
+    opt("ペルソナ", state.designAudience),
     `- ブランドトーン：${state.designTone || "モダン・スタイリッシュ"}`,
     opt("参考サイト・URL", state.designRef),
     opt("NG表現・避けたい方向性", state.designNg),
     opt("補足", state.request),
   ].filter(Boolean);
+
+  const prevResult = (state.designPrevResult || "").trim();
+  const prevSection = prevResult
+    ? `\n# 【サイト設計の結果】\n${prevResult}`
+    : "";
 
   return [
     "あなたは「クリエイティブディレクター兼デザイン戦略AI」です。",
@@ -725,6 +734,7 @@ function buildDesignPrompt(state) {
     "",
     "# 【制作情報】",
     ...infoLines,
+    prevSection,
     "",
     "# 【制約条件】",
     "- デザイン抽象論ではなく制作指示レベルまで具体化する",
@@ -888,9 +898,8 @@ function buildResearchPrompt(state) {
 function buildUiReviewPrompt(state) {
   const opt = (label, val) => (val || "").trim() ? `- ${label}：${val.trim()}` : null;
   const perspectiveLabels = {
-    overall: "UI/UX総合",
-    cv: "コンバージョン改善",
-    usability: "ユーザビリティ",
+    overall: "総合レビュー",
+    cv: "CV・導線改善",
     design: "デザイン品質",
     accessibility: "アクセシビリティ",
   };
@@ -906,14 +915,15 @@ function buildUiReviewPrompt(state) {
   const infoLines = [
     `- レビュー観点：${perspective}`,
     opt("ページの種類", state.uiPageType),
-    opt("ターゲットユーザー", state.uiTarget),
+    opt("ペルソナ", state.uiTarget),
     opt("改善したいこと", state.uiGoal),
     opt("補足", state.request),
   ].filter(Boolean);
 
   return [
     "あなたは「UI/UXコンサルタント兼プロダクトレビューAI」です。",
-    "添付のスクリーンショット・URL・構成情報をもとに、クライアントへそのまま提出できるレベルのUI/UXレビューと改善提案を作成してください。",
+    "添付のスクリーンショットをもとに、クライアントへそのまま提出できるレベルのデザインレビューと改善提案を作成してください。",
+    "※スクリーンショットが添付されていない場合は、その旨を伝えてください。",
     "",
     "# 【レビュー情報】",
     ...infoLines,
