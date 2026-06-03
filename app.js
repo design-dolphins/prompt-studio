@@ -95,6 +95,9 @@ const fields = {
   bsTone: document.querySelector("#bsTone"),
   bsMaterials: document.querySelector("#bsMaterials"),
   bsNotes: document.querySelector("#bsNotes"),
+  wfRequest: document.querySelector("#wfRequest"),
+  designNotes: document.querySelector("#designNotes"),
+  uiNotes: document.querySelector("#uiNotes"),
 };
 
 const modeLabels = {
@@ -478,7 +481,7 @@ function buildWireframePrompt(state) {
 
   const materialsText = (state.wfMaterials || "").trim();
   const siteDesignText = (state.wfSiteDesign || "").trim();
-  const notesText = (state.request || "").trim();
+  const notesText = (state.wfRequest || "").trim();
 
   return [
     "あなたは「Webフロントエンドエンジニア兼UIワイヤーフレーム生成AI」です。",
@@ -720,7 +723,7 @@ function buildDesignPrompt(state) {
     `- ブランドトーン：${state.designTone || "モダン・スタイリッシュ"}`,
     opt("参考サイト・URL", state.designRef),
     opt("NG表現・避けたい方向性", state.designNg),
-    opt("補足", state.request),
+    opt("補足", state.designNotes),
   ].filter(Boolean);
 
   const prevResult = (state.designPrevResult || "").trim();
@@ -917,7 +920,7 @@ function buildUiReviewPrompt(state) {
     opt("ページの種類", state.uiPageType),
     opt("ペルソナ", state.uiTarget),
     opt("改善したいこと", state.uiGoal),
-    opt("補足", state.request),
+    opt("補足", state.uiNotes),
   ].filter(Boolean);
 
   return [
@@ -1271,11 +1274,8 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-finish").style.display  = hasDedicated ? "none" : "";
 
   // 補足欄: illust/minutes/customは非表示、他の専用モードは表示（下部に）
-  const hideRequest = isIllust || isMinutes || isCustom || isCompetitor || isSiteDesign || isBrainstorm;
+  const hideRequest = isIllust || isMinutes || isCustom || isCompetitor || isSiteDesign || isBrainstorm || isWireframe || isDesign || isUiReview;
   document.querySelector("#fieldset-request").style.display = hideRequest ? "none" : "";
-  document.querySelector("#wfSectionsGroup").style.display = isWireframe ? "" : "none";
-  document.querySelector("#wfNotesGroup").style.display = isWireframe ? "" : "none";
-  document.querySelector("#uiOptionalGroup").style.display = isUiReview ? "" : "none";
   document.querySelector("#designOptionalGroup").style.display = isDesign ? "" : "none";
   document.querySelector("#researchOptionalGroup").style.display = isResearch ? "" : "none";
 

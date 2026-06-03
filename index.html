@@ -78,6 +78,11 @@
                   NG表現・避けたい方向性
                   <input id="designNg" name="designNg" type="text" placeholder="例：過度な装飾、古くさいフォント、圧迫感のある配色" />
                 </label>
+
+                <label>
+                  補足・その他
+                  <textarea id="designNotes" name="designNotes" rows="3" placeholder="例：追加で気になる点や希望があれば"></textarea>
+                </label>
               </div>
 
             </fieldset>
@@ -354,6 +359,30 @@
                 ペルソナ
                 <input id="uiTarget" name="uiTarget" type="text" placeholder="例：30代男性の中小企業経営者、ITツールに不慣れ" />
               </label>
+
+              <div id="uiOptionalGroup">
+                <p class="optional-section-label">任意</p>
+
+                <label>
+                  改善したいこと
+                  <textarea id="uiGoal" name="uiGoal" rows="2" placeholder="例：CVRを上げたい、離脱率を下げたい、信頼感を出したい"></textarea>
+                </label>
+
+                <label>
+                  出力のボリューム
+                  <select id="uiVolume" name="uiVolume">
+                    <option value="standard">標準（各項目ポイントを押さえて）</option>
+                    <option value="brief">簡潔（要点のみ）</option>
+                    <option value="detail">詳細（各項目を詳しく）</option>
+                  </select>
+                </label>
+
+                <label>
+                  補足・その他
+                  <textarea id="uiNotes" name="uiNotes" rows="3" placeholder="例：追加で気になる点や希望があれば"></textarea>
+                </label>
+              </div>
+
             </fieldset>
 
             <fieldset id="fieldset-proposal" style="display:none">
@@ -437,8 +466,30 @@
 
                 <label>
                   サイト設計の結果
-                <textarea id="wfSiteDesign" name="wfSiteDesign" rows="4" placeholder="サイト設計モードの結果をそのまま貼り付けてください。ページ構成・導線をワイヤーに反映します。"></textarea>
-              </label>
+                  <textarea id="wfSiteDesign" name="wfSiteDesign" rows="4" placeholder="サイト設計モードの結果をそのまま貼り付けてください。ページ構成・導線をワイヤーに反映します。"></textarea>
+                </label>
+
+                <div id="wfSectionsGroup">
+                  <label>
+                    セクション構成
+                    <textarea id="wfSections" name="wfSections" rows="7"></textarea>
+                    <small class="field-hint">空欄にするとAIが提案します。</small>
+                  </label>
+                </div>
+
+                <label>
+                  作成の背景・ひとこと
+                  <textarea id="wfRequest" name="wfRequest" rows="4" placeholder="例：初回クライアント提案用。シンプルに見せたい。"></textarea>
+                </label>
+
+                <div id="wfNotesGroup">
+                  <label>
+                    補足
+                    <textarea id="wfNotes" name="wfNotes" rows="2" placeholder="例：電話番号、CTAコピー、強調したいポイントなど"></textarea>
+                  </label>
+                </div>
+              </div>
+
             </fieldset>
 
             <fieldset id="fieldset-illust" style="display:none">
@@ -577,40 +628,6 @@
 
 
             <fieldset id="fieldset-request" style="display:none">
-              <div id="wfSectionsGroup" style="display:none">
-                <label>
-                  セクション構成
-                  <textarea id="wfSections" name="wfSections" rows="7"></textarea>
-                  <small class="field-hint">空欄にするとAIが提案します。</small>
-                </label>
-              </div>
-
-              <div id="uiOptionalGroup" style="display:none">
-                <label>
-                  改善したいこと
-                  <textarea id="uiGoal" name="uiGoal" rows="2" placeholder="例：CVRを上げたい、離脱率を下げたい、信頼感を出したい"></textarea>
-                </label>
-                <label>
-                  出力のボリューム
-                  <select id="uiVolume" name="uiVolume">
-                    <option value="standard">標準（各項目ポイントを押さえて）</option>
-                    <option value="brief">簡潔（要点のみ）</option>
-                    <option value="detail">詳細（各項目を詳しく）</option>
-                  </select>
-                </label>
-              </div>
-
-              <div id="designOptionalGroup" style="display:none">
-                <label>
-                  参考サイト・URL
-                  <input id="designRef" name="designRef" type="text" placeholder="例：https://example.com、競合Aサイト" />
-                </label>
-                <label>
-                  NG表現・避けたい方向性
-                  <input id="designNg" name="designNg" type="text" placeholder="例：古くさい印象、過剰な装飾、暗い配色" />
-                </label>
-              </div>
-
               <div id="researchOptionalGroup" style="display:none">
                 <label>
                   調査対象の企業
@@ -632,12 +649,6 @@
                 <span id="requestLabelText" style="font-size:0.82rem;font-weight:720;color:var(--muted);"></span>
                 <textarea id="request" name="request" rows="4" placeholder=""></textarea>
               </label>
-              <div id="wfNotesGroup" style="display:none">
-                <label>
-                  補足
-                  <textarea id="wfNotes" name="wfNotes" rows="2" placeholder="例：電話番号、CTAコピー、強調したいポイントなど"></textarea>
-                </label>
-              </div>
             </fieldset>
 
             <fieldset id="fieldset-extras">
