@@ -34,6 +34,7 @@
                   <option value="minutes">議事録・要約リライト</option>
                   <option value="competitor">競合分析</option>
                   <option value="sitedesign">サイト設計</option>
+                  <option value="seo">サイトマップ・メタ情報設計</option>
                   <option value="wireframe">ワイヤーフレーム</option>
                   <option value="design-direction">デザイン指示書</option>
                   <option value="ui-review">デザインレビュー</option>
@@ -218,8 +219,13 @@
                 <p class="optional-section-label">任意</p>
 
                 <label>
+                  次回MTG日程
+                  <input id="minNextMtg" name="minNextMtg" type="text" placeholder="例：6/10（火）14:00〜、未定" />
+                </label>
+
+                <label>
                   どう出してほしいか
-                <input id="minWish" name="minWish" type="text" placeholder="例：箇条書きを多めに、Slack共有用に短く、決定事項を目立たせて" />
+                  <input id="minWish" name="minWish" type="text" placeholder="例：箇条書きを多めに、Slack共有用に短く、決定事項を目立たせて" />
                 </label>
               </div>
             </fieldset>
@@ -276,6 +282,65 @@
                 <label>
                   補足・その他
                   <textarea id="siteNotes" name="siteNotes" rows="3" placeholder="例：追加で気になる点や希望があれば"></textarea>
+                </label>
+              </div>
+
+            </fieldset>
+
+            <fieldset id="fieldset-seo" style="display:none">
+              <legend>サイトマップ・メタ情報設計</legend>
+
+              <label>
+                用途
+                <select id="seoType" name="seoType">
+                  <option value="new">新規サイト設計</option>
+                  <option value="existing">リニューアル・改善</option>
+                </select>
+              </label>
+
+              <div id="seoUrlGroup" style="display:none">
+                <label>
+                  サイトURL
+                  <input id="seoUrl" name="seoUrl" type="text" placeholder="例：https://example.com（AIが各ページにアクセスして現在のメタ情報を確認します）" />
+                </label>
+              </div>
+
+              <label>
+                サイト名・ブランド名
+                <input id="seoSiteName" name="seoSiteName" type="text" placeholder="例：株式会社〇〇、SaaSサービス名" />
+              </label>
+
+              <label>
+                対象ページ
+                <textarea id="seoPages" name="seoPages" rows="5" placeholder="例（新規）：TOP、サービス、実績、料金、FAQ、お問い合わせ&#10;例（既存）：https://example.com/service、https://example.com/about"></textarea>
+              </label>
+
+              <label>
+                狙いたいキーワード
+                <input id="seoKeywords" name="seoKeywords" type="text" placeholder="例：Web制作 東京、コーポレートサイト 制作会社" />
+              </label>
+
+              <div id="seoOptionalGroup">
+                <p class="optional-section-label">任意</p>
+
+                <label>
+                  サイト設計の結果
+                  <textarea id="seoPrevResult" name="seoPrevResult" rows="4" placeholder="サイト設計モードの結果をそのまま貼り付けてください"></textarea>
+                </label>
+
+                <label>
+                  ターゲット
+                  <input id="seoTarget" name="seoTarget" type="text" placeholder="例：30代経営者、採用担当者、子育て中の主婦" />
+                </label>
+
+                <label>
+                  ブランドのトーン
+                  <input id="seoTone" name="seoTone" type="text" placeholder="例：誠実・専門的、やわらかく親しみやすい、スタイリッシュ" />
+                </label>
+
+                <label>
+                  補足・その他
+                  <textarea id="seoNotes" name="seoNotes" rows="3" placeholder="例：追加で気になる点や希望があれば"></textarea>
                 </label>
               </div>
 
@@ -380,7 +445,7 @@
 
                 <label>
                   補足・その他
-                  <textarea id="uiNotes" name="uiNotes" rows="3" placeholder="例：追加で気になる点や希望があれば"></textarea>
+                  <textarea id="uiNotes" name="uiNotes" rows="3" placeholder="例：優しめにお願いします、前向きな表現で伝えてほしい"></textarea>
                 </label>
               </div>
 
