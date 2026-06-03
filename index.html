@@ -38,6 +38,7 @@
                   <option value="design-direction">デザイン指示書</option>
                   <option value="ui-review">デザインレビュー</option>
                   <option value="illust">イラスト生成</option>
+                  <option value="convert">画像→編集データ</option>
                 </select>
                 <small class="field-hint" id="modeHint"></small>
               </label>
@@ -621,6 +622,40 @@
                     <option value="2.5">2.5px</option>
                     <option value="3">3px（太め）</option>
                   </select>
+                </label>
+              </div>
+
+            </fieldset>
+
+            <fieldset id="fieldset-convert" style="display:none">
+              <legend>画像→編集データ設定</legend>
+              <p class="optional-section-label" style="font-weight:400; font-size:0.8rem; color:#A4A4A4; border:none; padding-top:0;">変換したい画像を添付してから使ってください</p>
+
+              <label>
+                出力形式
+                <select id="convertOutputFormat" name="convertOutputFormat">
+                  <option value="pptx">.pptx（PowerPoint）</option>
+                  <option value="html">HTML + CSS</option>
+                  <option value="svg">SVG</option>
+                </select>
+              </label>
+
+              <div id="convertOptionalGroup">
+                <p class="optional-section-label">任意</p>
+
+                <label>
+                  使用フォント
+                  <input id="convertFont" name="convertFont" type="text" placeholder="例：Noto Sans JP、游ゴシック、Arial" />
+                </label>
+
+                <label>
+                  色の上書き指定
+                  <input id="convertColorOverride" name="convertColorOverride" type="text" placeholder="例：#FF7E21 をメインカラーに変更" />
+                </label>
+
+                <label>
+                  補足・その他
+                  <textarea id="convertNotes" name="convertNotes" rows="3" placeholder="例：余白を広めに、枠線を細く"></textarea>
                 </label>
               </div>
 

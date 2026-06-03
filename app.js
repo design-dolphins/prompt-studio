@@ -98,6 +98,10 @@ const fields = {
   wfRequest: document.querySelector("#wfRequest"),
   designNotes: document.querySelector("#designNotes"),
   uiNotes: document.querySelector("#uiNotes"),
+  convertOutputFormat: document.querySelector("#convertOutputFormat"),
+  convertFont: document.querySelector("#convertFont"),
+  convertColorOverride: document.querySelector("#convertColorOverride"),
+  convertNotes: document.querySelector("#convertNotes"),
 };
 
 const modeLabels = {
@@ -113,6 +117,7 @@ const modeLabels = {
   research: "リサーチ・競合分析",
   custom: "自由に作る",
   illust: "イラスト生成",
+  convert: "画像→編集データ",
 };
 
 const modeHints = {
@@ -128,6 +133,7 @@ const modeHints = {
   research: "競合、顧客、業界、参考事例を整理したい時。",
   custom: "上にない用途を自由に作りたい時。",
   illust: "フラットベクター編集イラストの画像生成プロンプトを作りたい時。",
+  convert: "画像を .pptx・HTML・SVG に組み直して編集できるデータにしたい時。",
 };
 
 const exampleRequests = {
@@ -143,6 +149,7 @@ const exampleRequests = {
   research: "",
   custom: "",
   illust: "",
+  convert: "",
 };
 
 const roleMap = {
@@ -158,6 +165,7 @@ const roleMap = {
   research: "市場分析コンサルタント兼リサーチAI",
   custom: "プロンプトエンジニア兼専門領域支援AI",
   illust: "フラットベクターイラスト生成AI",
+  convert: "画像再構築・編集データ変換AI",
 };
 
 const templateConfigs = {
@@ -803,11 +811,12 @@ function buildSiteDesignPrompt(state) {
     "2. 現状の課題と背景",
     "3. 提案するサイトの方向性（なぜこのアプローチか）",
     "4. ページ構成案（各ページの役割付き）",
-    "5. ユーザー導線（メインの流れを2〜3パターン）",
-    "6. 期待できる効果・成果指標",
+    "5. サイトマップ（ツリー形式で出力。例：HOME ├ サービス ├ 実績 └ お問い合わせ）",
+    "6. ユーザー導線（メインの流れを2〜3パターン）",
+    "7. 期待できる効果・成果指標",
     isSlide
       ? [
-          "7. スライド構成案（表形式）",
+          "8. スライド構成案（表形式）",
           "   | No | タイトル | 伝えたいこと | 主な内容（2〜4項目の具体的な内容） |",
           "   各スライドの「主な内容」は、スライド上に載せる具体的な項目を2〜4つ記載してください。",
           "   例：| 2 | 現状の課題 | 問題点を整理する | 問い合わせにつながりにくい構成・競合との差・ユーザーが求める情報のギャップ・現状KPI |",
@@ -1025,6 +1034,105 @@ function buildProposalPrompt(state) {
   ].join("\n");
 }
 
+function buildConvertPrompt(state) {
+  const fmt = state.convertOutputFormat || "pptx";
+  const font = (state.convertFont || "").trim();
+  const colorOverride = (state.convertColorOverride || "").trim();
+  const notes = (state.convertNotes || "").trim();
+
+  const colorLines = [
+    "# 配色",
+    "- 原画からHEXで抽出して再現する（近似で済ませない）。",
+    "- 近似色の統一：色差が小さい色（例：#1A1A1A と #222222）は同一色にまとめ、使用色数を最小化する。",
+    colorOverride ? `- 上書き色：${colorOverride}` : null,
+  ].filter(Boolean).join("\n");
+
+  const fontRule = font
+    ? `- フォントは「${font}」で統一する（日本語・英数字とも）。`
+    : "- 日本語フォントはfont-familyで明示的に指定する。";
+
+  const notesSection = notes ? `\n# 補足\n${notes}` : "";
+
+  const steps = [
+    "Step 1. 画像を観察し、存在する要素だけを列挙する（元画像にない要素を足さない）。",
+    "Step 2. 各要素の位置・色・サイズを実測し、座標・寸法を出力フォーマットの単位に等比変換する。",
+    "Step 3. テキストは一字一句コピーする（全角/半角・句読点・記号の種類まで一致させる）。",
+    "Step 4. 要素を次のルールで振り分ける：テキストはネイティブのテキスト要素、図形・線・背景色はネイティブの図形要素で組む。写真・イラスト・アイコン画像など「そもそも画像であるコンテンツ」はラスタ画像のまま埋め込む。",
+    "Step 5. 出力後に原画と並べて比較し、目視でバレるズレだけ修正する（最大3回）。",
+  ].join("\n");
+
+  if (fmt === "pptx") {
+    return [
+      "あなたは添付画像を「見た目はほぼ同じ・中身は完全に編集可能」な .pptx に組み直すプロです。python-pptx でゼロから再構築してください。",
+      "",
+      steps,
+      "",
+      "# 出力形式",
+      "- キャンバス：16:9（13.333 × 7.5 inch）。原画の比率が異なる場合は原画優先。",
+      "- 納品物：編集可能な .pptx を1ファイル。",
+      "",
+      "# デザイン仕様",
+      "- 全テキストが選択・編集できること（文字の画像化・アウトライン化・SmartArt化は禁止）。",
+      "- 全シェイプが個別に選択・移動・リサイズできること。",
+      "- SVG埋め込み禁止。テキストや図形の代替としてのラスタ画像使用禁止（画像コンテンツの埋め込みは可）。",
+      "- 点線・破線の枠は「塗りなしシェイプ＋破線アウトライン」で表現する（prstDash: dash / sysDash / sysDot、線幅1〜2pt）。短い線を並べた自作破線は禁止。",
+      `- ${fontRule.replace("- ", "")} 日本語はea（eastAsia）とlatinの両方に同じフェイスを指定する。`,
+      "- テキストボックスは右マージンを30〜100pt広めに取り、word_wrap=Falseにする。",
+      "",
+      colorLines,
+      "",
+      "# ルール",
+      "- 原画にない要素を追加しない／原画にある要素を省略しない。",
+      "- Boldは大きい見出し・英語ラベル・アクセント色の小ラベルのみ。本文中の単語を勝手に太字にしない。",
+      "- 完成基準：「原画と並べて、見る人にバレる破綻がないこと」。ピクセル単位の追い込みは不要。",
+      notesSection,
+    ].filter(v => v !== "").join("\n");
+  }
+
+  if (fmt === "html") {
+    return [
+      "あなたは添付画像を「見た目はほぼ同じ・中身は完全に編集可能」なHTMLページに組み直すプロです。",
+      "",
+      steps,
+      "",
+      "# 出力形式",
+      "- 1ファイルのHTML（CSSは<style>タグにまとめる）。",
+      "- 全テキストが選択・コピー・編集できること（テキストの画像化禁止）。",
+      "- 各ブロックが個別に移動・リサイズできる構造にする（Flexbox / Grid / position:absolute を適切に使う）。",
+      "- 背景・装飾はCSSで表現する。テキストや図形の代替としてのラスタ画像使用禁止（画像コンテンツの埋め込みは可）。",
+      `- ${fontRule}`,
+      "",
+      colorLines,
+      "",
+      "# ルール",
+      "- 原画にない要素を追加しない／原画にある要素を省略しない。",
+      "- 完成基準：「原画と並べて、見る人にバレる破綻がないこと」。",
+      notesSection,
+    ].filter(v => v !== "").join("\n");
+  }
+
+  // svg
+  return [
+    "あなたは添付画像を「見た目はほぼ同じ・中身は完全に編集可能」なSVGファイルに組み直すプロです。",
+    "",
+    steps,
+    "",
+    "# 出力形式",
+    "- 単体で開けるSVGファイル（xmlns属性付き）。",
+    "- viewBoxは原画の縦横比に合わせる。",
+    "- 全テキストが選択・編集できること（アウトライン化禁止）。",
+    "- 全シェイプが個別に選択・編集できること（<g>グループ化は可、各要素を独立操作できる構造を維持）。",
+    `- ${fontRule}`,
+    "",
+    colorLines,
+    "",
+    "# ルール",
+    "- 原画にない要素を追加しない／原画にある要素を省略しない。",
+    "- 完成基準：「原画と並べて、見る人にバレる破綻がないこと」。",
+    notesSection,
+  ].filter(v => v !== "").join("\n");
+}
+
 function buildIllustPrompt(state) {
   const theme = (state.illustTheme || state.request || '').trim() || 'テーマを入力してください';
 
@@ -1033,11 +1141,12 @@ function buildIllustPrompt(state) {
     const size   = state.illustIconSize   || "24";
     const stroke = state.illustIconStroke || "2";
     return [
-      `[テーマ]に関連するアイコンを6〜8個、セットで作成してください。`.replace("[テーマ]", theme),
+      `${theme}に関連するアイコンを6〜8個、セットで作成してください。`,
       `スタイルは統一されたアウトラインアイコン、線の太さ${stroke}px相当で均一に。`,
       "モノクロ（黒線・白背景）、シンプルで視認性の高いデザイン。",
       `各アイコンのサイズは${size}px基準で統一。`,
       "グリッド上に整列して配置。",
+      `SVGコードで出力してください。各アイコンを viewBox="0 0 ${size} ${size}" の個別SVGとして出力するか、1ファイル内に <symbol> でまとめて出力してください。`,
     ].join("\n");
   }
 
@@ -1244,10 +1353,11 @@ function updateIllustVisibility(mode) {
   const isBrainstorm = mode === "brainstorm";
   const isCustom    = mode === "custom";
   const isEmailMode = mode === "email";
+  const isConvert   = mode === "convert";
 
   // 専用フィールドがあるモード（標準フォームを隠す）
   const hasDedicated = isIllust || isWireframe || isProposal || isUiReview ||
-                       isDesign || isResearch || isCompetitor || isSiteDesign || isMinutes || isBrainstorm || isCustom || isEmailMode;
+                       isDesign || isResearch || isCompetitor || isSiteDesign || isMinutes || isBrainstorm || isCustom || isEmailMode || isConvert;
 
   // 各専用fieldsetの表示制御
   document.querySelector("#fieldset-illust").style.display    = isIllust    ? "" : "none";
@@ -1267,6 +1377,7 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-brainstorm").style.display = isBrainstorm ? "" : "none";
   document.querySelector("#fieldset-email").style.display     = isEmailMode ? "" : "none";
   document.querySelector("#fieldset-custom").style.display    = isCustom    ? "" : "none";
+  document.querySelector("#fieldset-convert").style.display   = isConvert   ? "" : "none";
 
   // 標準フォームの表示制御
   document.querySelector("#fieldset-extras").style.display  = hasDedicated ? "none" : "";
@@ -1274,7 +1385,7 @@ function updateIllustVisibility(mode) {
   document.querySelector("#fieldset-finish").style.display  = hasDedicated ? "none" : "";
 
   // 補足欄: illust/minutes/customは非表示、他の専用モードは表示（下部に）
-  const hideRequest = isIllust || isMinutes || isCustom || isCompetitor || isSiteDesign || isBrainstorm || isWireframe || isDesign || isUiReview;
+  const hideRequest = isIllust || isMinutes || isCustom || isCompetitor || isSiteDesign || isBrainstorm || isWireframe || isDesign || isUiReview || isConvert;
   document.querySelector("#fieldset-request").style.display = hideRequest ? "none" : "";
   document.querySelector("#designOptionalGroup").style.display = isDesign ? "" : "none";
   document.querySelector("#researchOptionalGroup").style.display = isResearch ? "" : "none";
@@ -1383,6 +1494,7 @@ function numberedList(items) {
 
 function buildPrompt(state) {
   if (state.mode === "illust") return buildIllustPrompt(state);
+  if (state.mode === "convert") return buildConvertPrompt(state);
   if (state.mode === "proposal") return buildProposalPrompt(state);
   if (state.mode === "ui-review") return buildUiReviewPrompt(state);
   if (state.mode === "design-direction") return buildDesignPrompt(state);

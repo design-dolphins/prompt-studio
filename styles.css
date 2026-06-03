@@ -394,7 +394,8 @@ textarea:focus {
 #siteOptionalGroup,
 #customOptionalGroup,
 #minutesOptionalGroup,
-#wireframeOptionalGroup {
+#wireframeOptionalGroup,
+#convertOptionalGroup {
   display: grid;
   gap: 14px;
 }
