@@ -1314,6 +1314,87 @@ function buildIllustPrompt(state) {
     const iconStyle  = state.illustIconStyle  || "outline";
     const iconWeight = state.illustIconWeight || "light";
 
+    if (iconStyle === "outline-color") {
+      return [
+        `Theme: ${theme}`,
+        "",
+        "Generate 6 different icons relevant to the theme.",
+        "Choose the most representative subjects automatically.",
+        "",
+        "For abstract themes (such as IR, ESG, DX, recruitment, corporate, business, strategy, finance, sustainability, healthcare, education, etc.),",
+        "choose symbols commonly used on professional corporate websites and business communications.",
+        "",
+        "Flat colored icon set of 6 icons on white background.",
+        "",
+        "Output image: 1200×800px.",
+        "2×3 grid layout.",
+        "Each icon approximately 350×350px.",
+        "",
+        "Style:",
+        "Filled shapes with outline.",
+        "Outline color: #1A1A1A.",
+        "Outline width: 12px.",
+        "Uniform stroke.",
+        "Consistent stroke weight throughout the entire set.",
+        "",
+        "Color palette:",
+        "Use soft, muted, professional colors.",
+        "Avoid highly saturated colors.",
+        "Prefer warm and friendly tones.",
+        "Use a limited color palette across the entire set.",
+        "",
+        "Shape:",
+        "Soft rounded corners.",
+        "Friendly geometric construction.",
+        "Gentle curves.",
+        "Approachable silhouettes.",
+        "Slightly simplified proportions.",
+        "Not overly round.",
+        "Not cartoonish.",
+        "",
+        "Simple pictogram-style construction.",
+        "Minimal internal details.",
+        "Clear and recognizable forms.",
+        "Instantly recognizable silhouettes.",
+        "",
+        "Designed for websites, landing pages, SaaS products, service pages, mobile apps, and modern UI systems.",
+        "",
+        "Prefer objects, tools, facilities, and symbols over people.",
+        "Objects should be represented as generic symbols rather than realistic products.",
+        "",
+        "Maintain consistent visual complexity across all icons.",
+        "Use a similar amount of detail for every icon.",
+        "",
+        "The icon shapes should be simple and vector-friendly.",
+        "Every icon should be drawable using a small number of SVG paths.",
+        "Prefer: circles, rounded rectangles, straight lines, simple polylines.",
+        "Avoid: complex contours, hand-drawn curves, unnecessary anchor points.",
+        "",
+        "Avoid:",
+        "tiny details, thin gaps, intricate cutouts, complex negative space,",
+        "mechanical details, logos, mascots, children's illustration style,",
+        "toy-like proportions, decorative details, realistic details,",
+        "public-signage aesthetics, map-marker icon style.",
+        "",
+        "Pure vector appearance.",
+        "No gradients. No shadows. No textures. No 3D effects. No text labels. No background elements.",
+        "",
+        "Center each icon within its grid cell.",
+        "Maintain consistent scale and visual balance across all icons.",
+        "",
+        "SVG-friendly construction.",
+        "Use basic geometric shapes wherever possible.",
+        "",
+        "FINAL STEP (REQUIRED)",
+        "",
+        'After generating the icon image, always ask:',
+        '"Would you like me to convert this icon set to editable SVG files using Python?"',
+        "",
+        "Do not automatically create SVG files.",
+        "Wait for user approval before SVG conversion.",
+      ].join("\n");
+    }
+
     if (iconStyle === "filled") {
       return [
         `Theme: ${theme}`,
@@ -2064,8 +2145,8 @@ fields.illustStyle.addEventListener("change", () => {
 });
 
 fields.illustIconStyle.addEventListener("change", () => {
-  const isFilled = fields.illustIconStyle.value === "filled";
-  document.querySelector("#illustIconWeightRow").style.display = isFilled ? "none" : "";
+  const style = fields.illustIconStyle.value;
+  document.querySelector("#illustIconWeightRow").style.display = style === "outline" ? "" : "none";
   updatePrompt();
 });
 fields.wfPageType.addEventListener("change", () => updateWfSectionsPlaceholder(fields.wfPageType.value));
