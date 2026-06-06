@@ -20,6 +20,7 @@ const fields = {
   illustCategory: document.querySelector("#illustCategory"),
   illustDirection: document.querySelector("#illustDirection"),
   illustIconStyle:  document.querySelector("#illustIconStyle"),
+  illustIconWeight: document.querySelector("#illustIconWeight"),
   illustBg: document.querySelector("#illustBg"),
   illustFigure: document.querySelector("#illustFigure"),
   illustFigureCount: document.querySelector("#illustFigureCount"),
@@ -1310,7 +1311,8 @@ function buildIllustPrompt(state) {
 
   // アイコン
   if (state.illustStyle === "icon") {
-    const iconStyle = state.illustIconStyle || "outline";
+    const iconStyle  = state.illustIconStyle  || "outline";
+    const iconWeight = state.illustIconWeight || "light";
 
     if (iconStyle === "filled") {
       return [
@@ -1374,6 +1376,24 @@ function buildIllustPrompt(state) {
     }
 
     // outline
+    if (iconWeight === "light") {
+      return [
+        `Flat icon set of 6 icons on white background, related to ${theme}.`,
+        "Output image: 1200×800px, 2×3 grid layout, each icon approximately 350×350px.",
+        "Style: outline only, no fills.",
+        "Stroke width: 7px. Color: #1A1A1A on white background.",
+        "Shape style: clean geometric feel. Straight lines for structural elements,",
+        "natural curves where the subject requires (cups, handles, circles).",
+        "Consistent stroke weight throughout the entire set.",
+        "Simple, professional UI icon style.",
+        "No gradients, no shadows, no 3D effects, no text labels.",
+        "",
+        'After generating the icon image, always ask:',
+        '"Would you like me to convert this icon set to editable SVG files using Python?"',
+        "Do not automatically create SVG files. Wait for user approval before SVG conversion.",
+      ].join("\n");
+    }
+
     return [
       `Theme: ${theme}`,
       "",
@@ -2044,6 +2064,8 @@ fields.illustStyle.addEventListener("change", () => {
 });
 
 fields.illustIconStyle.addEventListener("change", () => {
+  const isFilled = fields.illustIconStyle.value === "filled";
+  document.querySelector("#illustIconWeightRow").style.display = isFilled ? "none" : "";
   updatePrompt();
 });
 fields.wfPageType.addEventListener("change", () => updateWfSectionsPlaceholder(fields.wfPageType.value));
